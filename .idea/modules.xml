@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/KTPM.iml" filepath="$PROJECT_DIR$/.idea/KTPM.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ITSS/KTPM.iml" filepath="$PROJECT_DIR$/ITSS/KTPM.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/gym_management.iml" filepath="$PROJECT_DIR$/.idea/gym_management.iml" />
     </modules>
   </component>
 </project>

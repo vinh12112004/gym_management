@@ -5,6 +5,7 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/KTPM/pom.xml" />
+        <option value="$PROJECT_DIR$/ITSS/pom.xml" />
       </list>
     </option>
   </component>

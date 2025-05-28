@@ -7,8 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.List;
 import java.util.Optional;
+import java.util.Map;
+
 
 @RestController
 @RequestMapping("/api/equipments")
@@ -57,14 +60,16 @@ public class EquipmentController {
 
     // Xóa thiết bị
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEquipment(@PathVariable Integer id) {
+    public ResponseEntity<Map<String, String>> deleteEquipment(@PathVariable Integer id) {
         return equipmentService.getEquipmentById(id)
                 .map(equipment -> {
                     equipmentService.deleteEquipment(id);
-                    return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+                    return new ResponseEntity<>(Map.of("message", "Xóa thiết bị thành công!"), HttpStatus.OK);
                 })
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .orElseGet(() -> new ResponseEntity<>(Map.of("message", "Thiết bị không tồn tại!"), HttpStatus.NOT_FOUND));
     }
+
+
 
     // Tìm kiếm thiết bị theo tên
     @GetMapping("/search/name")
