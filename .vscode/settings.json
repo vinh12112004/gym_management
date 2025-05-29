@@ -1,0 +1,13 @@
+{
+  // Khai báo nơi chứa mã nguồn Java
+  "java.project.sourcePaths": [
+    "src/main/java"
+  ],
+
+  // Tự động cập nhật cấu hình khi pom.xml thay đổi
+  "java.configuration.updateBuildConfiguration": "automatic",
+
+  // Bật import tự động Maven projects
+  "java.import.maven.enabled": true,
+  "java.compile.nullAnalysis.mode": "automatic"
+}
