@@ -12,12 +12,17 @@ com\example\gymmanagement\service\WorkoutLogService.class
 com\example\gymmanagement\controller\EmployeeController.class
 com\example\gymmanagement\GymManagementApplication.class
 com\example\gymmanagement\model\Employee.class
+com\example\gymmanagement\service\MemberService.class
 com\example\gymmanagement\repository\PackageRepository.class
 com\example\gymmanagement\service\FeedbackService.class
+com\example\gymmanagement\controller\MemberController.class
 com\example\gymmanagement\controller\PackageController.class
+com\example\gymmanagement\repository\MemberRepository.class
+com\example\gymmanagement\service\CustomUserDetailsService.class
 com\example\gymmanagement\controller\WorkoutLogController.class
 com\example\gymmanagement\repository\UserRepository.class
 com\example\gymmanagement\repository\WorkoutLogRepository.class
+com\example\gymmanagement\model\Member.class
 com\example\gymmanagement\service\EmployeeService.class
 com\example\gymmanagement\repository\FeedbackRepository.class
 com\example\gymmanagement\controller\AuthController.class
