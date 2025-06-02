@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox prefHeight="450" prefWidth="700" spacing="0"
+      xmlns="http://javafx.com/javafx/23.0.1"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.ITSS.controller.LoginController">
+
+    <!-- LEFT PANE -->
+    <VBox alignment="CENTER" prefWidth="300" spacing="20" style="-fx-background-color: #312783;">
+        <padding>
+            <Insets bottom="40" left="20" right="20" top="40" />
+        </padding>
+
+        <ImageView fitHeight="100" fitWidth="100" preserveRatio="true">
+            <image>
+<!--                <Image url="@../../png/group.png" />-->
+            </image>
+        </ImageView>
+
+        <Label style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;" text="Gym Management System" />
+
+        <Label style="-fx-text-fill: white; -fx-font-size: 14px;" text="Create Account" />
+
+        <Button prefWidth="120" style="-fx-background-color: white; -fx-text-fill: #312783; -fx-font-size: 14px;" text="Sign Up" />
+
+        <!-- spacer đẩy phần trên lên giữa -->
+        <Region VBox.vgrow="ALWAYS" />
+    </VBox>
+
+    <!-- RIGHT PANE -->
+    <VBox alignment="CENTER" prefWidth="400" spacing="15" style="-fx-background-color: #F5F5F5;">
+        <padding>
+            <Insets bottom="30" left="30" right="30" top="60" />
+        </padding>
+
+        <ImageView fitHeight="60" fitWidth="60" preserveRatio="true">
+            <image>
+<!--                <Image url="@../../png/user.png" />-->
+            </image>
+        </ImageView>
+
+        <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Sign In" />
+
+        <TextField fx:id="emailField" promptText="Email" />
+
+        <PasswordField fx:id="passwordField" prefWidth="250" promptText="Password" />
+
+        <Button prefWidth="120"
+                style="-fx-background-color: #312783; -fx-text-fill: white; -fx-font-size: 14px;"
+                text="Login"
+                onAction="#handleLogin" />
+
+        <!-- spacer đẩy form lên giữa -->
+        <Region VBox.vgrow="ALWAYS" />
+    </VBox>
+
+</HBox>

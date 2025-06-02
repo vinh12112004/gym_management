@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<HBox prefHeight="450" prefWidth="700" spacing="0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ITSS.controller.RegisterController">
+
+    <!-- LEFT PANE -->
+    <VBox fx:id="leftPane" alignment="CENTER" prefWidth="300" spacing="20" style="-fx-background-color: #312783;">
+        <padding>
+            <Insets bottom="40" left="20" right="20" top="40" />
+        </padding>
+
+        <ImageView fitHeight="100" fitWidth="100" preserveRatio="true">
+            <image>
+<!--                <Image url="@../../png/group.png" />-->
+            </image>
+        </ImageView>
+
+        <Label style="-fx-text-fill: white;                       -fx-font-size: 18px;                       -fx-font-weight: bold;" text="Gym Management System" />
+
+        <Label style="-fx-text-fill: white;                       -fx-font-size: 14px;" text="Already have an account?" />
+
+        <Button onAction="#goToLogin" prefWidth="120" style="-fx-background-color: white;                        -fx-text-fill: #312783;                        -fx-font-size: 14px;                        -fx-cursor: hand;" text="Sign In" />
+
+        <!-- spacer đẩy lên trên -->
+        <Region VBox.vgrow="ALWAYS" />
+    </VBox>
+
+    <!-- RIGHT PANE -->
+    <VBox fx:id="rightPane" alignment="CENTER" prefWidth="400" spacing="15" style="-fx-background-color: #F5F5F5;">
+        <padding>
+            <Insets bottom="30" left="30" right="30" top="60" />
+        </padding>
+
+        <ImageView fitHeight="60" fitWidth="60" preserveRatio="true">
+            <image>
+<!--                <Image url="@../../png/user.png" />-->
+            </image>
+        </ImageView>
+
+        <Label style="-fx-font-size: 18px;                       -fx-font-weight: bold;                       -fx-text-fill: #312783;" text="Register" />
+
+        <TextField fx:id="fullNameField" prefWidth="250" promptText="Full Name" style="-fx-padding: 8 10;                           -fx-border-color: #ccc;                           -fx-border-radius: 3;                           -fx-background-radius: 3;" />
+        <TextField fx:id="usernameField" prefWidth="250" promptText="Username" style="-fx-padding: 8 10;                           -fx-border-color: #ccc;                           -fx-border-radius: 3;                           -fx-background-radius: 3;" />
+        <TextField fx:id="emailField" prefWidth="250" promptText="Email" style="-fx-padding: 8 10;                           -fx-border-color: #ccc;                           -fx-border-radius: 3;                           -fx-background-radius: 3;" />
+        <PasswordField fx:id="passwordField" prefWidth="250" promptText="Password" style="-fx-padding: 8 10;                               -fx-border-color: #ccc;                               -fx-border-radius: 3;                               -fx-background-radius: 3;" />
+        <PasswordField fx:id="confirmPasswordField" prefWidth="250" promptText="Confirm Password" style="-fx-padding: 8 10;                               -fx-border-color: #ccc;                               -fx-border-radius: 3;                               -fx-background-radius: 3;" />
+
+        <Button onAction="#handleRegister" prefWidth="120" style="-fx-background-color: #312783;                        -fx-text-fill: white;                        -fx-font-size: 14px;                        -fx-cursor: hand;" text="Register" />
+
+        <Region VBox.vgrow="ALWAYS" />
+    </VBox>
+
+</HBox>

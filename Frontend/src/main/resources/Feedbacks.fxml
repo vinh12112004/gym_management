@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.ITSS.controller.FeedbackController">
+    <HBox spacing="20" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" style="-fx-padding:20;">
+        <!-- Feedback List Section -->
+        <VBox style="-fx-background-color:white; -fx-padding:20; -fx-background-radius:10; -fx-border-color:#ddd; -fx-border-radius:10;" VBox.vgrow="ALWAYS">
+            <Label text="Feedback List" style="-fx-font-size:16px; -fx-padding:0 0 10 0;" />
+            <TableView fx:id="tableFeedback">
+                <columns>
+                    <TableColumn fx:id="colFeedbackId" text="ID" prefWidth="60"/>
+                    <TableColumn fx:id="colUserId" text="User ID" prefWidth="70"/>
+                    <TableColumn fx:id="colTargetType" text="Target Type" prefWidth="80"/>
+                    <TableColumn fx:id="colTargetId" text="Target ID" prefWidth="70"/>
+                    <TableColumn fx:id="colContent" text="Content" prefWidth="200"/>
+                    <TableColumn fx:id="colRating" text="Rating" prefWidth="60"/>
+                    <TableColumn fx:id="colCreatedAt" text="Created At" prefWidth="120"/>
+                </columns>
+            </TableView>
+        </VBox>
+        <!-- New Feedback Form Section -->
+        <VBox spacing="15" prefWidth="320" style="-fx-background-color:white; -fx-padding:20; -fx-background-radius:10; -fx-border-color:#ddd; -fx-border-radius:10;">
+            <Label text="Send Feedback" style="-fx-font-size:16px; -fx-padding:0 0 10 0;" />
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label text="User ID:" prefWidth="100"/>
+                <TextField fx:id="txtUserId" prefWidth="180" editable="false"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label text="Target Type:" prefWidth="100"/>
+                <TextField fx:id="txtTargetType" prefWidth="180"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label text="Target ID:" prefWidth="100"/>
+                <TextField fx:id="txtTargetId" prefWidth="180"/>
+            </HBox>
+            <HBox alignment="TOP_LEFT" spacing="10">
+                <Label text="Content:" prefWidth="100"/>
+                <TextArea fx:id="txtContent" prefWidth="180" prefHeight="60"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label text="Rating:" prefWidth="100"/>
+                <Spinner fx:id="spnRating" prefWidth="80"/>
+            </HBox>
+            <Pane VBox.vgrow="ALWAYS"/>
+            <HBox spacing="10" alignment="CENTER_RIGHT">
+                <Button text="Send" prefWidth="80" style="-fx-background-color:#312783; -fx-text-fill:white;" onAction="#sendFeedback"/>
+                <Button text="Clear" prefWidth="80" style="-fx-background-color:#312783; -fx-text-fill:white;" onAction="#clearForm"/>
+                <Button text="Dashboard" prefWidth="100" style="-fx-background-color:#312783; -fx-text-fill:white;" onAction="#showDashboard"/>
+            </HBox>
+        </VBox>
+    </HBox>
+</AnchorPane>
