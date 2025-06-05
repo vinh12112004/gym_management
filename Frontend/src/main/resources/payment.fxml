@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.PaymentController">
+    <HBox spacing="20" style="-fx-padding:20;" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+        <!-- Table Section -->
+        <VBox style="-fx-background-color: white; -fx-padding:20; -fx-background-radius:10; -fx-border-color:#ddd; -fx-border-radius:10;" VBox.vgrow="ALWAYS">
+            <TableView fx:id="tablePayment">
+                <columns>
+                    <TableColumn fx:id="colMemberId" prefWidth="100" text="Customer ID" />
+                    <TableColumn fx:id="colNameCol" prefWidth="150" text="Name" />
+                    <TableColumn fx:id="colStartDateCol" prefWidth="100" text="Start Date" />
+                    <TableColumn fx:id="colEndDateCol" prefWidth="100" text="End Date" />
+                    <TableColumn fx:id="colStatusCol" prefWidth="100" text="Status" />
+                </columns>
+            </TableView>
+        </VBox>
+        <!-- Payment Form Section -->
+        <VBox prefWidth="250" spacing="15" style="-fx-background-color: white; -fx-padding:20; -fx-background-radius:10; -fx-border-color:#ddd; -fx-border-radius:10;">
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label prefWidth="100" text="Customer ID:" />
+                <ComboBox fx:id="cmbMemberId" prefWidth="120" />
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label prefWidth="100" text="Name:" />
+                <ComboBox fx:id="cmbMemberName" prefWidth="120" />
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label prefWidth="100" text="Total:" />
+                <Label fx:id="lblTotal" style="-fx-font-weight:bold;" text="$$0.0" />
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label prefWidth="100" text="Amount:" />
+                <TextField fx:id="txtAmount" prefWidth="120" />
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label prefWidth="100" text="Change:" />
+                <Label fx:id="lblChange" style="-fx-font-weight:bold;" text="$$0.0" />
+            </HBox>
+            <HBox alignment="CENTER" spacing="10">
+                <Button fx:id="btnPay" prefWidth="100" style="-fx-background-color:#312783; -fx-text-fill:white;" text="Pay" />
+                <Button fx:id="btnDashboard" alignment="CENTER" onAction="#showDashboard" prefWidth="100" style="-fx-background-color:#312783; -fx-text-fill:white;" text="Dashboard" />
+            </HBox>
+        </VBox>
+    </HBox>
+</AnchorPane>

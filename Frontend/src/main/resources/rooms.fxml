@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.RoomsController">
+    <VBox spacing="10"
+          AnchorPane.topAnchor="0"
+          AnchorPane.bottomAnchor="0"
+          AnchorPane.leftAnchor="0"
+          AnchorPane.rightAnchor="0"
+          style="-fx-padding:20; -fx-background-color: white;">
+        
+        <!-- Search & Dashboard -->
+        <HBox spacing="10">
+            <TextField fx:id="txtSearchById"
+                       promptText="Search by Room ID"
+                       onAction="#searchById"
+                       prefWidth="150"/>
+            <TextField fx:id="txtSearchByName"
+                       promptText="Search by Name"
+                       onAction="#searchByName"
+                       prefWidth="150"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Button fx:id="btnDashboard"
+                    text="Dashboard"
+                    onAction="#showDashboard"
+                    style="-fx-background-color: #312783; -fx-text-fill: white;"/>
+        </HBox>
+        
+        <HBox spacing="20" VBox.vgrow="ALWAYS">
+            <!-- Form nhập liệu (đã bỏ Type) -->
+            <VBox spacing="10" prefWidth="300">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="Room ID:" prefWidth="100"/>
+                    <TextField fx:id="txtRoomId" prefWidth="180"/>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="Name:" prefWidth="100"/>
+                    <TextField fx:id="txtName" prefWidth="180"/>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="Capacity:" prefWidth="100"/>
+                    <TextField fx:id="txtCapacity" prefWidth="180"/>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="Status:" prefWidth="100"/>
+                    <ComboBox fx:id="cmbStatus" prefWidth="180"/>
+                </HBox>
+                <HBox alignment="CENTER" spacing="10" style="-fx-padding:10 0 0 0;">
+                    <Button fx:id="btnAdd"
+                            text="Add"
+                            prefWidth="80"
+                            style="-fx-background-color: #312783; -fx-text-fill: white;"/>
+                    <Button fx:id="btnUpdate"
+                            text="Update"
+                            prefWidth="80"
+                            style="-fx-background-color: #312783; -fx-text-fill: white;"/>
+                </HBox>
+                <HBox alignment="CENTER" spacing="10">
+                    <Button fx:id="btnDelete"
+                            text="Delete"
+                            prefWidth="80"
+                            style="-fx-background-color: #312783; -fx-text-fill: white;"/>
+                    <Button fx:id="btnClear"
+                            text="Clear"
+                            prefWidth="80"
+                            style="-fx-background-color: #AAAAAA; -fx-text-fill: white;"/>
+                </HBox>
+            </VBox>
+            
+            <!-- Bảng hiển thị (bỏ cột Type) -->
+            <TableView fx:id="tableRooms" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colRoomId"
+                                 text="Room ID"
+                                 prefWidth="100"/>
+                    <TableColumn fx:id="colName"
+                                 text="Name"
+                                 prefWidth="150"/>
+                    <TableColumn fx:id="colCapacity"
+                                 text="Capacity"
+                                 prefWidth="80"/>
+                    <TableColumn fx:id="colStatus"
+                                 text="Status"
+                                 prefWidth="100"/>
+                </columns>
+            </TableView>
+        </HBox>
+    </VBox>
+</AnchorPane>

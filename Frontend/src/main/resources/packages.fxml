@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.PackagesController">
+    <VBox spacing="20" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+          AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" style="-fx-padding:20;">
+        <!-- Top Bar with Search Fields and Dashboard Button -->
+        <HBox spacing="10">
+            <TextField fx:id="txtSearchById" promptText="Search by Package ID" prefWidth="200"/>
+            <TextField fx:id="txtSearchByName" promptText="Search by Package Name" prefWidth="200"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Button fx:id="btnDashboard" text="Dashboard" style="-fx-background-color:#312783; -fx-text-fill:white;" onAction="#showDashboard"/>
+        </HBox>
+
+        <!-- Table Section -->
+        <VBox VBox.vgrow="ALWAYS" style="-fx-background-color:white; -fx-padding:10; -fx-background-radius:10; -fx-border-color:#ddd; -fx-border-radius:10;">
+            <TableView fx:id="tablePackages">
+                <columns>
+                    <TableColumn fx:id="colPackageId" text="Package ID" prefWidth="100"/>
+                    <TableColumn fx:id="colPackageName" text="Name" prefWidth="150"/>
+                    <TableColumn fx:id="colDuration" text="Duration (days)" prefWidth="120"/>
+                    <TableColumn fx:id="colPrice" text="Price" prefWidth="100"/>
+                </columns>
+            </TableView>
+        </VBox>
+
+        <!-- Action Buttons -->
+        <HBox spacing="15" alignment="CENTER_RIGHT">
+            <Button fx:id="btnAdd" text="Add" prefWidth="80" style="-fx-background-color:#312783; -fx-text-fill:white;"/>
+            <Button fx:id="btnEdit" text="Edit" prefWidth="80" style="-fx-background-color:#312783; -fx-text-fill:white;"/>
+            <Button fx:id="btnDelete" text="Delete" prefWidth="80" style="-fx-background-color:#312783; -fx-text-fill:white;"/>
+            <Button fx:id="btnClear" text="Clear" prefWidth="80" style="-fx-background-color:#cccccc; -fx-text-fill:black;"/>
+        </HBox>
+    </VBox>
+</AnchorPane>
