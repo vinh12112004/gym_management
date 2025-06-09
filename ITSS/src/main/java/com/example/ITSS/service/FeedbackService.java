@@ -2,68 +2,48 @@ package com.example.ITSS.service;
 
 import com.example.ITSS.model.Feedback;
 import com.example.ITSS.repository.FeedbackRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class FeedbackService {
 
-    private final FeedbackRepository feedbackRepository;
+    private final FeedbackRepository repo;
 
-    @Autowired
-    public FeedbackService(FeedbackRepository feedbackRepository) {
-        this.feedbackRepository = feedbackRepository;
+    public FeedbackService(FeedbackRepository repo) {
+        this.repo = repo;
     }
 
-    // Lấy tất cả feedback
-    public List<Feedback> getAllFeedbacks() {
-        return feedbackRepository.findAll();
+    public List<Feedback> getAll() {
+        return repo.findAll();
     }
 
-    // Lấy feedback theo ID
-    public Feedback getFeedbackById(Long id) {
-        return feedbackRepository.findById(id).orElse(null);
+    public Feedback getById(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Feedback not found"));
     }
 
-    // Thêm hoặc cập nhật feedback
-    public Feedback saveFeedback(Feedback feedback) {
-        return feedbackRepository.save(feedback);
+    public Feedback create(Feedback f) {
+        f.setCreatedAt(LocalDateTime.now());
+        f.setUpdatedAt(LocalDateTime.now());
+        return repo.save(f);
     }
 
-    // Xóa feedback
-    public void deleteFeedback(Long id) {
-        feedbackRepository.deleteById(id);
+    public Feedback update(Long id, Feedback f) {
+        Feedback ex = getById(id);
+        ex.setMemberId(f.getMemberId());
+        ex.setMemberName(f.getMemberName());
+        ex.setSubject(f.getSubject());
+        ex.setMessage(f.getMessage());
+        ex.setRating(f.getRating());
+        ex.setStatus(f.getStatus());
+        ex.setUpdatedAt(LocalDateTime.now());
+        return repo.save(ex);
     }
 
-    // Lấy feedback theo userId
-    public List<Feedback> findByUserId(Integer userId) {
-        return feedbackRepository.findByUserId(userId);
-    }
-
-    // Lấy feedback theo targetType
-    public List<Feedback> findByTargetType(String targetType) {
-        return feedbackRepository.findByTargetTypeContainingIgnoreCase(targetType);
-    }
-
-    // Lấy feedback theo targetId
-    public List<Feedback> findByTargetId(Integer targetId) {
-        return feedbackRepository.findByTargetId(targetId);
-    }
-
-    public Feedback updateFeedback(Long id, Feedback newFeedback) {
-        return feedbackRepository.findById(id)
-                .map(fb -> {
-                    fb.setContent(newFeedback.getContent());
-                    fb.setRating(newFeedback.getRating());
-                    fb.setTargetType(newFeedback.getTargetType());
-                    fb.setTargetId(newFeedback.getTargetId());
-                    fb.setUserId(newFeedback.getUserId());
-                    fb.setCreatedAt(newFeedback.getCreatedAt());
-                    return feedbackRepository.save(fb);
-                })
-                .orElse(null);
+    public void delete(Long id) {
+        repo.deleteById(id);
     }
 }

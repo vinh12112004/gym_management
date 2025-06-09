@@ -2,64 +2,44 @@ package com.example.ITSS.controller;
 
 import com.example.ITSS.model.Feedback;
 import com.example.ITSS.service.FeedbackService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
-@RequestMapping("/api/feedback")
+@RequestMapping("/api/feedbacks")
 public class FeedbackController {
 
-    @Autowired
-    private FeedbackService feedbackService;
+    private final FeedbackService svc;
 
-    @PostMapping
-    public Feedback createFeedback(@RequestBody Feedback feedback) {
-        return feedbackService.saveFeedback(feedback);
+    public FeedbackController(FeedbackService svc) {
+        this.svc = svc;
     }
 
     @GetMapping
-    public List<Feedback> getAllFeedback() {
-        return feedbackService.getAllFeedbacks();
+    public List<Feedback> all() {
+        return svc.getAll();
     }
 
     @GetMapping("/{id}")
-    public Feedback getFeedbackById(@PathVariable Long id) {
-        return feedbackService.getFeedbackById(id);
+    public Feedback get(@PathVariable Long id) {
+        return svc.getById(id);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Map<String, String>> deleteFeedback(@PathVariable Long id) {
-        Feedback fb = feedbackService.getFeedbackById(id);
-        if (fb != null) {
-            feedbackService.deleteFeedback(id);
-            return new ResponseEntity<>(Map.of("message", "Xóa feedback thành công!"), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(Map.of("message", "Feedback không tồn tại!"), HttpStatus.NOT_FOUND);
-        }
+    @PostMapping
+    public Feedback create(@RequestBody Feedback f) {
+        return svc.create(f);
     }
 
     @PutMapping("/{id}")
-    public Feedback updateFeedback(@PathVariable Long id, @RequestBody Feedback feedback) {
-        return feedbackService.updateFeedback(id, feedback);
+    public Feedback update(@PathVariable Long id, @RequestBody Feedback f) {
+        return svc.update(id, f);
     }
 
-    @GetMapping("/user/{userId}")
-    public List<Feedback> getFeedbackByUserId(@PathVariable Integer userId) {
-        return feedbackService.findByUserId(userId);
-    }
-
-    @GetMapping("/target-type/{targetType}")
-    public List<Feedback> getFeedbackByTargetType(@PathVariable String targetType) {
-        return feedbackService.findByTargetType(targetType);
-    }
-
-    @GetMapping("/target/{targetId}")
-    public List<Feedback> getFeedbackByTargetId(@PathVariable Integer targetId) {
-        return feedbackService.findByTargetId(targetId);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        svc.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

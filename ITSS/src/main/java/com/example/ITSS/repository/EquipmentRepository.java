@@ -11,12 +11,9 @@ public interface EquipmentRepository extends JpaRepository<Equipment, Integer> {
     // Tìm kiếm theo tên
     List<Equipment> findByNameContainingIgnoreCase(String name);
 
-    // Tìm kiếm theo loại
-    List<Equipment> findByTypeContainingIgnoreCase(String type);
-
     // Tìm kiếm theo trạng thái
     List<Equipment> findByStatus(String status);
 
-    // Tìm kiếm theo vị trí
-    List<Equipment> findByLocationContainingIgnoreCase(String location);
+    // Tìm kiếm theo xuất xứ
+    List<Equipment> findByOriginContainingIgnoreCase(String origin);
 }

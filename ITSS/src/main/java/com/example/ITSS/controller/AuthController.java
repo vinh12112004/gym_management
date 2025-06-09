@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("api/auth")
 public class AuthController {
     @Autowired
     private RoleRepository roleRepository;
@@ -40,21 +40,22 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> user) {
         try {
-            String email = user.get("email");
+            String usernameOrEmail = user.get("username");
             String password = user.get("password");
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-            UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(usernameOrEmail, password));
+            UserDetails userDetails = userDetailsService.loadUserByUsername(usernameOrEmail);
             String token = jwtUtil.generateToken(userDetails.getUsername());
 
-            // Lấy tên người dùng từ entity User
-            User dbUser = userRepository.findByEmail(email).orElse(null);
+            User dbUser = userRepository.findByUsername(usernameOrEmail)
+                    .or(() -> userRepository.findByEmail(usernameOrEmail))
+                    .orElse(null);
             Long id = dbUser != null ? dbUser.getId() : null;
-            String name = dbUser != null ? dbUser.getName() : "";
+            String username = dbUser != null ? dbUser.getUsername() : "";
 
             return ResponseEntity.ok(Map.of(
-                "token", token,
-                "id", id,
-                "name", name
+                    "token", token,
+                    "id", id,
+                    "username", username
             ));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Login failed: " + e.getMessage());

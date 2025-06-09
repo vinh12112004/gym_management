@@ -17,23 +17,35 @@ public class Feedback {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
-    private Integer userId;
+    // ID của member gửi feedback
+    @Column(name = "member_id", nullable = false)
+    private Long memberId;
 
-    @Column(name = "target_type", nullable = false)
-    private String targetType;
+    // Tên member
+    @Column(name = "member_name")
+    private String memberName;
 
-    @Column(name = "target_id", nullable = false)
-    private Integer targetId;
+    // Chủ đề feedback
+    @Column(name = "subject")
+    private String subject;
 
-    @Column(name = "content", nullable = false)
-    private String content;
+    // Nội dung feedback
+    @Column(name = "message", nullable = false)
+    private String message;
 
+    // Điểm đánh giá
     @Column(name = "rating")
     private Integer rating;
 
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP")
+    // Trạng thái feedback
+    @Column(name = "status")
+    private String status;
+
+    // Thời điểm tạo
+    @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    // Getters và setters
+    // Thời điểm cập nhật
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 }

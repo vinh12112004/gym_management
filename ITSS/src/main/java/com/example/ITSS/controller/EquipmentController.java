@@ -77,21 +77,4 @@ public class EquipmentController {
         return equipmentService.findEquipmentsByName(name);
     }
 
-    // Tìm kiếm thiết bị theo loại
-    @GetMapping("/search/type")
-    public List<Equipment> searchEquipmentsByType(@RequestParam String type) {
-        return equipmentService.findEquipmentsByType(type);
-    }
-
-    // Tìm kiếm thiết bị theo trạng thái
-    @GetMapping("/search/status")
-    public List<Equipment> searchEquipmentsByStatus(@RequestParam String status) {
-        return equipmentService.findEquipmentsByStatus(status);
-    }
-
-    // Tìm kiếm thiết bị theo vị trí
-    @GetMapping("/search/location")
-    public List<Equipment> searchEquipmentsByLocation(@RequestParam String location) {
-        return equipmentService.findEquipmentsByLocation(location);
-    }
 }

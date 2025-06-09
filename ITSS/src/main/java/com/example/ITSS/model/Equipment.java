@@ -18,13 +18,12 @@ public class Equipment {
     private Integer id;
 
     private String name;
-    private String type;
-    private String describe;
     private Integer number;
     private String status;
 
     @Column(name = "received_date")
     private LocalDate receivedDate;
 
-    private String location;
+    @Column(name = "origin")
+    private String origin;
 }

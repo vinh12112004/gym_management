@@ -1,4 +1,3 @@
-// src/main/java/com/example/gymmanagement/controller/MemberController.java
 package com.example.ITSS.controller;
 
 import com.example.ITSS.model.Member;

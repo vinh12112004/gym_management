@@ -1,4 +1,3 @@
-// src/main/java/com/example/gymmanagement/service/MemberService.java
 package com.example.ITSS.service;
 
 import com.example.ITSS.model.Member;
@@ -31,9 +30,13 @@ public class MemberService {
 
     public Member update(Long id, Member m) {
         Member ex = getById(id);
-        ex.setName(m.getName());
+        ex.setFirstName(m.getFirstName());
+        ex.setLastName(m.getLastName());
         ex.setEmail(m.getEmail());
         ex.setPhone(m.getPhone());
+        ex.setJoinDate(m.getJoinDate());
+        ex.setMembershipType(m.getMembershipType());
+        ex.setStatus(m.getStatus());
         return repo.save(ex);
     }
 

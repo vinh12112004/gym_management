@@ -4,6 +4,7 @@ import com.example.ITSS.model.Package;
 import com.example.ITSS.repository.PackageRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -25,6 +26,8 @@ public class PackageService {
     }
 
     public Package create(Package p) {
+        p.setCreatedAt(LocalDateTime.now());
+        p.setUpdatedAt(LocalDateTime.now());
         return repo.save(p);
     }
 
@@ -33,6 +36,10 @@ public class PackageService {
         ex.setName(p.getName());
         ex.setDescription(p.getDescription());
         ex.setPrice(p.getPrice());
+        ex.setDurationMonths(p.getDurationMonths());
+        ex.setFeatures(p.getFeatures());
+        ex.setStatus(p.getStatus());
+        ex.setUpdatedAt(LocalDateTime.now());
         return repo.save(ex);
     }
 

@@ -43,18 +43,13 @@ public class EquipmentService {
         return equipmentRepository.findByNameContainingIgnoreCase(name);
     }
 
-    // Tìm kiếm thiết bị theo loại
-    public List<Equipment> findEquipmentsByType(String type) {
-        return equipmentRepository.findByTypeContainingIgnoreCase(type);
-    }
-
     // Tìm kiếm thiết bị theo trạng thái
     public List<Equipment> findEquipmentsByStatus(String status) {
         return equipmentRepository.findByStatus(status);
     }
 
-    // Tìm kiếm thiết bị theo vị trí
-    public List<Equipment> findEquipmentsByLocation(String location) {
-        return equipmentRepository.findByLocationContainingIgnoreCase(location);
+    // Tìm kiếm thiết bị theo xuất xứ
+    public List<Equipment> findEquipmentsByOrigin(String origin) {
+        return equipmentRepository.findByOriginContainingIgnoreCase(origin);
     }
 }
