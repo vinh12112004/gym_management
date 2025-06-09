@@ -127,7 +127,7 @@
             </VBox>
          </children>
       </GridPane>
-      <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#refreshData" text="Refresh Data" />
+<!--      <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#refreshData" text="Refresh Data" />-->
       <ProgressIndicator fx:id="progressIndicator" visible="false" />
    </children>
 </VBox>

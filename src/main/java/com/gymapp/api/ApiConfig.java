@@ -7,7 +7,7 @@ public class ApiConfig {
     public static final String AUTH_LOGIN         = "/auth/login";
 
     public static final String EQUIPMENTS         = "/equipments";
-    public static final String FEEDBACK           = "/feedback";
+    public static final String FEEDBACK           = "/feedbacks";
     public static final String MEMBERS            = "/members";
     public static final String PACKAGES           = "/packages";
     public static final String ROOMS              = "/rooms";
