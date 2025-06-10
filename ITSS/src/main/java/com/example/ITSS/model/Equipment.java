@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "equipment")
@@ -15,15 +15,15 @@ import java.time.LocalDate;
 public class Equipment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     private String name;
-    private Integer number;
+    private String type;
     private String status;
 
-    @Column(name = "received_date")
-    private LocalDate receivedDate;
+    @Column(name = "purchase_date")
+    private LocalDateTime purchaseDate;
 
-    @Column(name = "origin")
-    private String origin;
+    private Double price;
+    private String description;
 }
