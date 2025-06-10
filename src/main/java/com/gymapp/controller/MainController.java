@@ -27,10 +27,29 @@ public class MainController implements Initializable {
     @FXML private Button roomsBtn;
     @FXML private Button sessionsBtn;
     @FXML private Button feedbackBtn;
-    
+    @FXML private Button usersBtn;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         userLabel.setText("Welcome, " + SessionManager.getInstance().getCurrentUser());
+        String role = SessionManager.getInstance().getCurrentRole();
+        if ("TRAINER".equalsIgnoreCase(role)) {
+            feedbackBtn.setVisible(false);
+            feedbackBtn.setManaged(false); // Ẩn hoàn toàn khỏi layout
+            usersBtn.setVisible(false);
+            usersBtn.setManaged(false); // Ẩn hoàn toàn khỏi layout
+        }
+        if("MEMBER".equalsIgnoreCase(role)) {
+            equipmentBtn.setVisible(false);
+            equipmentBtn.setManaged(false); // Ẩn hoàn toàn khỏi layout
+            membersBtn.setVisible(false);
+            membersBtn.setManaged(false); // Ẩn hoàn toàn khỏi layout
+            packagesBtn.setVisible(false);
+            packagesBtn.setManaged(false); // Ẩn hoàn toàn khỏi layout
+            roomsBtn.setVisible(false);
+            roomsBtn.setManaged(false); // Ẩn hoàn toàn khỏi layout
+            usersBtn.setVisible(false);
+            usersBtn.setManaged(false); // Ẩn hoàn toàn khỏi layout
+        }
         showDashboard(); // Show dashboard by default
     }
     
@@ -90,6 +109,12 @@ public class MainController implements Initializable {
         loadContent("/fxml/Feedback.fxml");
         setActiveButton(feedbackBtn);
     }
+
+    @FXML
+    private void showUsers() {
+        loadContent("/fxml/Users.fxml");
+        setActiveButton(usersBtn);
+    }
     
     private void loadContent(String fxmlPath) {
         try {
@@ -102,6 +127,8 @@ public class MainController implements Initializable {
             showAlert("Error", "Could not load " + fxmlPath);
         }
     }
+
+    
     
     private void setActiveButton(Button activeButton) {
         // Reset all button styles
@@ -112,7 +139,8 @@ public class MainController implements Initializable {
         roomsBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;");
         sessionsBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;");
         feedbackBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;");
-        
+        usersBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;"); // Thêm dòng này
+
         // Set active button style
         activeButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;");
     }

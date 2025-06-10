@@ -16,37 +16,45 @@ import javafx.stage.Stage;
 import java.net.http.HttpResponse;
 
 public class LoginController {
-    
+
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
     @FXML private Button loginButton;
     @FXML private Button registerButton;
     @FXML private ProgressIndicator progressIndicator;
-    
+
     @FXML
     private void handleLogin() {
         String username = usernameField.getText().trim();
         String password = passwordField.getText();
-        
+
         if (username.isEmpty() || password.isEmpty()) {
             showAlert("Error", "Please enter both username and password.");
             return;
         }
-        
+
         setLoading(true);
-        
+
         Task<Void> loginTask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
                 User loginUser = new User(username, "", password);
                 HttpResponse<String> response = ApiClient.getInstance().post(ApiConfig.AUTH_LOGIN, loginUser);
-                
+
                 if (response.statusCode() == 200) {
                     JsonNode jsonResponse = ApiClient.getInstance().getObjectMapper().readTree(response.body());
                     String token = jsonResponse.get("token").asText();
-                    
+                    String usernameResp = jsonResponse.get("username").asText();
+                    // Lấy role đầu tiên từ mảng roles
+                    String role = "";
+                    JsonNode rolesNode = jsonResponse.get("roles");
+                    if (rolesNode != null && rolesNode.isArray() && rolesNode.size() > 0) {
+                        role = rolesNode.get(0).asText();
+                    }
+
+                    String finalRole = role;
                     Platform.runLater(() -> {
-                        SessionManager.getInstance().login(token, username);
+                        SessionManager.getInstance().login(token, usernameResp, finalRole);
                         openMainWindow();
                     });
                 } else {
@@ -56,12 +64,12 @@ public class LoginController {
                 }
                 return null;
             }
-            
+
             @Override
             protected void succeeded() {
                 setLoading(false);
             }
-            
+
             @Override
             protected void failed() {
                 Platform.runLater(() -> {
@@ -70,10 +78,10 @@ public class LoginController {
                 });
             }
         };
-        
+
         new Thread(loginTask).start();
     }
-    
+
     @FXML
     private void handleRegister() {
         try {
@@ -86,7 +94,7 @@ public class LoginController {
             showAlert("Error", "Could not load registration form.");
         }
     }
-    
+
     private void openMainWindow() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainWindow.fxml"));
@@ -99,7 +107,7 @@ public class LoginController {
             showAlert("Error", "Could not load main window.");
         }
     }
-    
+
     private void setLoading(boolean loading) {
         Platform.runLater(() -> {
             progressIndicator.setVisible(loading);
@@ -107,7 +115,7 @@ public class LoginController {
             registerButton.setDisable(loading);
         });
     }
-    
+
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);

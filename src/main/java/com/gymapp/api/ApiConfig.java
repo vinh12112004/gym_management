@@ -12,4 +12,5 @@ public class ApiConfig {
     public static final String PACKAGES           = "/packages";
     public static final String ROOMS              = "/rooms";
     public static final String WORKOUT_SESSIONS   = "/workout-sessions";
+    public static final String USERS = "/users";
 }

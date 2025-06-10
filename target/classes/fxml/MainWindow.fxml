@@ -34,6 +34,7 @@
             <Button fx:id="roomsBtn" mnemonicParsing="false" onAction="#showRooms" prefWidth="200.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;" text="Rooms" />
             <Button fx:id="sessionsBtn" mnemonicParsing="false" onAction="#showSessions" prefWidth="200.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;" text="Workout Sessions" />
             <Button fx:id="feedbackBtn" mnemonicParsing="false" onAction="#showFeedback" prefWidth="200.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;" text="Feedback" />
+            <Button fx:id="usersBtn" mnemonicParsing="false" onAction="#showUsers" prefWidth="200.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;" text="Users" />
          </children>
       </VBox>
    </left>
