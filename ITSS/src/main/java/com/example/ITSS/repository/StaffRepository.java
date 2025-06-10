@@ -1,11 +1,10 @@
-// src/main/java/com/example/gymmanagement/repository/MemberRepository.java
 package com.example.ITSS.repository;
 
-import com.example.ITSS.model.Member;
+import com.example.ITSS.model.Staff;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface StaffRepository extends JpaRepository<Staff, Long> {
     @Transactional
     void deleteByEmail(String email);
 }

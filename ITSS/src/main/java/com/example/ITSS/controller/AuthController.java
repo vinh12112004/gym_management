@@ -2,9 +2,11 @@ package com.example.ITSS.controller;
 
 import com.example.ITSS.model.Member;
 import com.example.ITSS.model.Role;
+import com.example.ITSS.model.Staff;
 import com.example.ITSS.model.User;
 import com.example.ITSS.repository.MemberRepository;
 import com.example.ITSS.repository.RoleRepository;
+import com.example.ITSS.repository.StaffRepository;
 import com.example.ITSS.repository.UserRepository;
 import com.example.ITSS.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,9 @@ public class AuthController {
 
     @Autowired
     private MemberRepository memberRepository;
+    
+    @Autowired
+    private StaffRepository staffRepository;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -114,6 +119,19 @@ public class AuthController {
             member.setStatus("ACTIVE");
             member.setMembershipType("STANDARD");
             memberRepository.save(member);
+        }
+
+        // Tạo staff nếu là MANAGER hoặc TRAINER
+        boolean isManager = roles.stream().anyMatch(r -> "MANAGER".equalsIgnoreCase(r.getName()));
+        boolean isTrainer = roles.stream().anyMatch(r -> "TRAINER".equalsIgnoreCase(r.getName()));
+        if (isManager || isTrainer) {
+            Staff staff = new Staff();
+            staff.setFirstName(firstName);
+            staff.setLastName(lastName);
+            staff.setEmail(email);
+            staff.setPhone(phone);
+            staff.setPosition(isManager ? "MANAGER" : "TRAINER");
+            staffRepository.save(staff);
         }
 
         return Map.of("message", "User registered successfully");

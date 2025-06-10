@@ -4,9 +4,12 @@ import com.example.ITSS.model.Role;
 import com.example.ITSS.model.User;
 import com.example.ITSS.repository.MemberRepository;
 import com.example.ITSS.repository.RoleRepository;
+import com.example.ITSS.repository.StaffRepository;
 import com.example.ITSS.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +29,13 @@ public class UserController {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private StaffRepository staffRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    
     // Lấy danh sách user
     @GetMapping
     public List<User> getAllUsers() {
@@ -41,11 +51,24 @@ public class UserController {
     }
 
     // Xóa user
+    @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
-        if (!userRepository.existsById(id)) {
+        Optional<User> userOpt = userRepository.findById(id);
+        if (userOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
+        User user = userOpt.get();
+        Set<String> roleNames = user.getRoles().stream()
+                .map(Role::getName)
+                .collect(Collectors.toSet());
+
+        if (roleNames.contains("MANAGER") || roleNames.contains("TRAINER")) {
+            staffRepository.deleteByEmail(user.getEmail());
+        } else if (roleNames.contains("MEMBER")) {
+            memberRepository.deleteByEmail(user.getEmail());
+        }
+
         userRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }
@@ -64,7 +87,9 @@ public class UserController {
                 .map(r -> roleRepository.findByName(r.getName())
                         .orElseThrow(() -> new RuntimeException("Role not found: " + r.getName())))
                 .collect(Collectors.toSet());
-
+        if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        }
         user.setRoles(newRoles);
         userRepository.save(user);
         return ResponseEntity.ok(user);
