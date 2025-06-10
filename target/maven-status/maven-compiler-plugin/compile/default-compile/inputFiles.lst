@@ -1,5 +1,6 @@
 D:\TestUi\v2\gym_management\src\main\java\com\gymapp\controller\RoomFormController.java
 D:\TestUi\v2\gym_management\src\main\java\com\gymapp\model\User.java
+D:\TestUi\v2\gym_management\src\main\java\com\gymapp\controller\StaffController.java
 D:\TestUi\v2\gym_management\src\main\java\com\gymapp\model\Equipment.java
 D:\TestUi\v2\gym_management\src\main\java\com\gymapp\controller\MainController.java
 D:\TestUi\v2\gym_management\src\main\java\com\gymapp\controller\RegisterController.java
@@ -16,6 +17,7 @@ D:\TestUi\v2\gym_management\src\main\java\com\gymapp\controller\LoginController.
 D:\TestUi\v2\gym_management\src\main\java\com\gymapp\controller\RoomController.java
 D:\TestUi\v2\gym_management\src\main\java\com\gymapp\util\SessionManager.java
 D:\TestUi\v2\gym_management\src\main\java\com\gymapp\model\Feedback.java
+D:\TestUi\v2\gym_management\src\main\java\com\gymapp\model\Staff.java
 D:\TestUi\v2\gym_management\src\main\java\com\gymapp\controller\WorkoutSessionFormController.java
 D:\TestUi\v2\gym_management\src\main\java\com\gymapp\util\ValidationUtil.java
 D:\TestUi\v2\gym_management\src\main\java\com\gymapp\api\ApiConfig.java
@@ -25,6 +27,7 @@ D:\TestUi\v2\gym_management\src\main\java\com\gymapp\controller\PackageFormContr
 D:\TestUi\v2\gym_management\src\main\java\com\gymapp\controller\PackageController.java
 D:\TestUi\v2\gym_management\src\main\java\com\gymapp\controller\UserController.java
 D:\TestUi\v2\gym_management\src\main\java\com\gymapp\GymManagementApp.java
+D:\TestUi\v2\gym_management\src\main\java\com\gymapp\controller\StaffFormController.java
 D:\TestUi\v2\gym_management\src\main\java\com\gymapp\controller\WorkoutSessionController.java
 D:\TestUi\v2\gym_management\src\main\java\com\gymapp\model\Package.java
 D:\TestUi\v2\gym_management\src\main\java\com\gymapp\controller\MemberController.java

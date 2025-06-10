@@ -6,6 +6,7 @@ com\gymapp\controller\RoomController$1$1.class
 com\gymapp\controller\RoomFormController.class
 com\gymapp\controller\MemberController.class
 com\gymapp\controller\WorkoutSessionFormController.class
+com\gymapp\controller\StaffFormController.class
 com\gymapp\controller\WorkoutSessionController.class
 com\gymapp\model\User.class
 com\gymapp\controller\EquipmentFormController$1.class
@@ -15,15 +16,18 @@ com\gymapp\controller\RoomController$2.class
 com\gymapp\model\Feedback.class
 com\gymapp\util\JsonUtil.class
 com\gymapp\controller\WorkoutSessionFormController$1.class
+com\gymapp\controller\StaffController$1$1.class
 com\gymapp\controller\FeedbackController$2.class
 com\gymapp\controller\DashboardController$1.class
 com\gymapp\controller\UserController$1.class
 com\gymapp\util\AlertHelper.class
 com\gymapp\controller\FeedbackController$2$1.class
 com\gymapp\controller\MemberFormController$1.class
+com\gymapp\controller\StaffController.class
 com\gymapp\controller\UserController.class
 com\gymapp\controller\PackageController$2.class
 com\gymapp\controller\DashboardController$1$4.class
+com\gymapp\controller\StaffController$1.class
 com\gymapp\GymManagementApp.class
 com\gymapp\controller\MemberController$2.class
 com\gymapp\controller\RoomController$1.class
@@ -36,8 +40,10 @@ com\gymapp\controller\DashboardController$1$1.class
 com\gymapp\controller\EquipmentController$2.class
 com\gymapp\controller\PackageFormController$1.class
 com\gymapp\controller\DashboardController$1$2.class
+com\gymapp\model\Staff.class
 com\gymapp\util\ValidationUtil.class
 com\gymapp\controller\LoginController.class
+com\gymapp\controller\StaffController$2.class
 com\gymapp\controller\RegisterController$1.class
 com\gymapp\controller\PackageFormController.class
 com\gymapp\controller\RoomController.class
@@ -49,6 +55,7 @@ com\gymapp\controller\LoginController$1.class
 com\gymapp\model\WorkoutSession.class
 com\gymapp\controller\RegisterController.class
 com\gymapp\controller\PackageController$1$1.class
+com\gymapp\controller\StaffFormController$1.class
 com\gymapp\model\Room.class
 com\gymapp\controller\EquipmentController$1$1.class
 com\gymapp\api\ApiConfig.class

@@ -42,14 +42,23 @@ public class UserFormController {
             titleLabel.setText("Edit User");
             emailField.setText(user.getEmail());
             usernameField.setText(user.getUsername());
-            usernameField.setDisable(true); // Không cho sửa username
-            emailField.setDisable(true);    // Không cho sửa email
+            usernameField.setDisable(true);
+            emailField.setDisable(true);
             roleComboBox.setValue(user.getFirstRole());
             passwordField.setPromptText("Leave blank to keep current password");
-            // Không set firstName, lastName, phone vì không có trong User
-            firstNameField.setText("");
-            lastNameField.setText("");
-            phoneField.setText("");
+            firstNameField.setVisible(false);
+            lastNameField.setVisible(false);
+            phoneField.setVisible(false);
+            ((Label) firstNameField.getParent().lookup("#firstNameLabel")).setVisible(false);
+            ((Label) lastNameField.getParent().lookup("#lastNameLabel")).setVisible(false);
+            ((Label) phoneField.getParent().lookup("#phoneLabel")).setVisible(false);
+        } else {
+            firstNameField.setVisible(true);
+            lastNameField.setVisible(true);
+            phoneField.setVisible(true);
+            ((Label) firstNameField.getParent().lookup("#firstNameLabel")).setVisible(true);
+            ((Label) lastNameField.getParent().lookup("#lastNameLabel")).setVisible(true);
+            ((Label) phoneField.getParent().lookup("#phoneLabel")).setVisible(true);
         }
     }
 
@@ -73,17 +82,26 @@ public class UserFormController {
             @Override
             protected Void call() throws Exception {
                 boolean isEdit = user != null;
-                // Tạo map để gửi lên backend
                 var reqMap = new java.util.HashMap<String, Object>();
                 reqMap.put("email", email);
                 reqMap.put("username", username);
-                if (!isEdit || !password.isEmpty()) {
+
+                // Gửi roles là mảng object
+                var roleObj = new java.util.HashMap<String, String>();
+                roleObj.put("name", role);
+                reqMap.put("roles", java.util.List.of(roleObj));
+
+                if (!isEdit) {
                     reqMap.put("password", password);
+                    reqMap.put("firstName", firstName);
+                    reqMap.put("lastName", lastName);
+                    reqMap.put("phone", phone);
+                } else {
+                    // Khi edit, chỉ gửi password nếu có nhập
+                    if (!password.isEmpty()) {
+                        reqMap.put("password", password);
+                    }
                 }
-                reqMap.put("roles", java.util.List.of(role));
-                reqMap.put("firstName", firstName);
-                reqMap.put("lastName", lastName);
-                reqMap.put("phone", phone);
 
                 var resp = isEdit
                         ? ApiClient.getInstance().put(ApiConfig.USERS + "/" + user.getId(), reqMap)
