@@ -8,10 +8,18 @@ import java.util.List;
 
 @Repository
 public interface EquipmentRepository extends JpaRepository<Equipment, Long> {
-    // Tìm kiếm theo tên
+
+    // Tìm kiếm theo tên (ignore case)
     List<Equipment> findByNameContainingIgnoreCase(String name);
 
     // Tìm kiếm theo trạng thái
     List<Equipment> findByStatus(String status);
 
+    // Tìm kiếm tất cả thiết bị trong một phòng cụ thể
+    List<Equipment> findByRoomId(Long roomId);
 }
+
+
+
+
+

@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Formula;
+
+import java.time.LocalTime;
 
 @Data
 @NoArgsConstructor
@@ -27,20 +30,27 @@ public class Room {
     private String address;
 
     @Column(name = "open_time")
-    private java.time.LocalTime OpenTime;
+    private LocalTime openTime;
 
     @Column(name = "close_time")
-    private java.time.LocalTime CloseTime;
+    private LocalTime closeTime;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "roomStatus", nullable = false)
     private RoomStatus roomStatus;
+
+    /**
+     * Trường ảo tính tổng số thiết bị trong phòng này.
+     * Hibernate sẽ chèn subquery này vào mỗi lần load Room.
+     */
+    @Formula("(select count(*) from equipment e where e.room_id = id)")
+    private int equipmentCount;
 
     public enum RoomType {
         Gym, Yoga, Fitness
     }
 
     public enum RoomStatus {
-        Hoat_dong, Sua_chua, Ngung_hoat_dong
+        Available, Occupied, Maintenance, Closed
     }
 }
