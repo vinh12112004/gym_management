@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox spacing="10.0"
+      xmlns="http://javafx.com/javafx/11.0.1"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.gymapp.controller.EquipmentController">
+    <padding>
+        <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+    </padding>
+
+    <!-- Title + Add/Refresh -->
+    <HBox alignment="CENTER_LEFT" spacing="10.0">
+        <children>
+            <Label text="Equipment Management">
+                <font><Font name="System Bold" size="24.0"/></font>
+            </Label>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button fx:id="addButton"
+                    text="Add"
+                    onAction="#handleAdd"/>
+            <Button fx:id="refreshButton"
+                    text="Refresh"
+                    onAction="#handleRefresh"/>
+        </children>
+    </HBox>
+
+    <!-- Room filter -->
+    <HBox alignment="CENTER_LEFT" spacing="10.0">
+        <children>
+            <Label text="Room:"/>
+            <ComboBox fx:id="roomFilterCombo"
+                      prefWidth="150.0"
+                      promptText="All rooms"/>
+        </children>
+    </HBox>
+
+    <!-- Search bar -->
+    <HBox alignment="CENTER_LEFT" spacing="10.0">
+        <children>
+            <TextField fx:id="searchField"
+                       promptText="Search by ID or name..."
+                       HBox.hgrow="ALWAYS"/>
+            <Button fx:id="searchButton"
+                    text="Search"
+                    onAction="#handleSearch"/>
+            <Button fx:id="clearButton"
+                    text="Clear"
+                    onAction="#handleClear"/>
+        </children>
+    </HBox>
+
+    <!-- Equipment table -->
+    <TableView fx:id="equipmentTable" prefHeight="400.0">
+        <columns>
+            <TableColumn fx:id="idColumn" text="ID" prefWidth="50.0">
+                <cellValueFactory>
+                    <PropertyValueFactory property="id"/>
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="nameColumn" text="Name" prefWidth="150.0">
+                <cellValueFactory>
+                    <PropertyValueFactory property="name"/>
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="typeColumn" text="Type" prefWidth="100.0">
+                <cellValueFactory>
+                    <PropertyValueFactory property="type"/>
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="statusColumn" text="Status" prefWidth="100.0">
+                <cellValueFactory>
+                    <PropertyValueFactory property="status"/>
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="purchaseDateColumn" text="Purchased" prefWidth="140.0">
+                <cellValueFactory>
+                    <PropertyValueFactory property="purchaseDate"/>
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="priceColumn" text="Price" prefWidth="80.0">
+                <cellValueFactory>
+                    <PropertyValueFactory property="price"/>
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="descriptionColumn" text="Description" prefWidth="200.0">
+                <cellValueFactory>
+                    <PropertyValueFactory property="description"/>
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="roomIdColumn" text="Room ID" prefWidth="80.0">
+                <cellValueFactory>
+                    <PropertyValueFactory property="room.id"/>
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="120.0"/>
+        </columns>
+    </TableView>
+
+    <!-- Row-level Edit/Delete -->
+    <HBox alignment="CENTER_LEFT" spacing="10.0">
+        <children>
+            <Button fx:id="editButton"
+                    text="Edit"
+                    disable="true"
+                    onAction="#handleEdit"/>
+            <Button fx:id="deleteButton"
+                    text="Delete"
+                    disable="true"
+                    onAction="#handleDelete"/>
+        </children>
+    </HBox>
+
+    <!-- Loading indicator -->
+    <ProgressIndicator fx:id="progressIndicator" visible="false"/>
+</VBox>
