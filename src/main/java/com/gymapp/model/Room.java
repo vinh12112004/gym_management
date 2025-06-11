@@ -1,45 +1,56 @@
 package com.gymapp.model;
 
-import java.time.LocalDateTime;
-
 public class Room {
     private Long id;
     private String name;
-    private String type;
-    private Integer capacity;
-    private String description;
-    private String status;
-    private Double hourlyRate;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    
+    private String roomType;    // Gym, Yoga, Fitness
+    private String address;
+    private String openTime;    // “HH:mm” format
+    private String closeTime;   // “HH:mm” format
+    private String roomStatus;
+    private int equipmentCount;
+
     public Room() {}
-    
-    // Getters and setters
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-    
+
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
-    
-    public String getType() { return type; }
-    public void setType(String type) { this.type = type; }
-    
-    public Integer getCapacity() { return capacity; }
-    public void setCapacity(Integer capacity) { this.capacity = capacity; }
-    
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-    
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
-    
-    public Double getHourlyRate() { return hourlyRate; }
-    public void setHourlyRate(Double hourlyRate) { this.hourlyRate = hourlyRate; }
-    
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-    
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+
+    public String getRoomType() { return roomType; }
+    public void setRoomType(String roomType) { this.roomType = roomType; }
+
+    public String getAddress() { return address; }
+    public void setAddress(String address) { this.address = address; }
+
+    public String getOpenTime() { return openTime; }
+    public void setOpenTime(String openTime) { this.openTime = openTime; }
+
+    public String getCloseTime() { return closeTime; }
+    public void setCloseTime(String closeTime) { this.closeTime = closeTime; }
+
+    public String getRoomStatus() { return roomStatus; }
+    public void setRoomStatus(String roomStatus) { this.roomStatus = roomStatus; }
+
+    public int getEquipmentCount() { return equipmentCount; }
+    public void setEquipmentCount(int equipmentCount) { this.equipmentCount = equipmentCount; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Room room = (Room) o;
+        return id != null && id.equals(room.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return name; // Để ComboBox hiển thị tên phòng
+    }
 }

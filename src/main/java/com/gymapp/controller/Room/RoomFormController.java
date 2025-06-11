@@ -15,17 +15,19 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.net.http.HttpResponse;
+import java.time.LocalTime;
+import java.util.Map;
 import java.util.ResourceBundle;
 
-public class RoomFormController implements Initializable {
+public class  RoomFormController implements Initializable {
 
     @FXML private Label titleLabel;
     @FXML private TextField nameField;
     @FXML private ComboBox<String> typeComboBox;
-    @FXML private TextField capacityField;
+    @FXML private TextArea addressArea;
+    @FXML private TextField openTimeField;
+    @FXML private TextField closeTimeField;
     @FXML private ComboBox<String> statusComboBox;
-    @FXML private TextField hourlyRateField;
-    @FXML private TextArea descriptionArea;
     @FXML private Button saveButton;
     @FXML private Button cancelButton;
     @FXML private ProgressIndicator progressIndicator;
@@ -35,31 +37,28 @@ public class RoomFormController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        typeComboBox.setItems(FXCollections.observableArrayList(
-                "Cardio", "Weight Training", "Group Fitness", "Yoga", "Spinning", "Boxing", "Swimming Pool", "Sauna"
-        ));
-        typeComboBox.setValue("Cardio");
+        typeComboBox.setItems(FXCollections.observableArrayList("Gym", "Yoga", "Fitness"));
+        typeComboBox.setValue("Gym");
 
         statusComboBox.setItems(FXCollections.observableArrayList(
                 "Available", "Occupied", "Maintenance", "Closed"
         ));
         statusComboBox.setValue("Available");
+
+        progressIndicator.setVisible(false);
     }
 
+    /** Gọi từ RoomController để chuyển form vào chế độ Edit hoặc Add */
     public void setRoom(Room room) {
         this.room = room;
         if (room != null) {
             titleLabel.setText("Edit Room");
             nameField.setText(room.getName());
-            typeComboBox.setValue(room.getType());
-            if (room.getCapacity() != null) {
-                capacityField.setText(room.getCapacity().toString());
-            }
-            statusComboBox.setValue(room.getStatus());
-            if (room.getHourlyRate() != null) {
-                hourlyRateField.setText(room.getHourlyRate().toString());
-            }
-            descriptionArea.setText(room.getDescription());
+            typeComboBox.setValue(room.getRoomType());
+            addressArea.setText(room.getAddress());
+            openTimeField.setText(room.getOpenTime() != null ? room.getOpenTime() : "");
+            closeTimeField.setText(room.getCloseTime() != null ? room.getCloseTime() : "");
+            statusComboBox.setValue(room.getRoomStatus());
         }
     }
 
@@ -72,29 +71,31 @@ public class RoomFormController implements Initializable {
         if (!validateInput()) return;
 
         setLoading(true);
-
         Task<Void> saveTask = new Task<>() {
             @Override
             protected Void call() throws Exception {
-                Room toSave = createRoomFromForm();
-                HttpResponse<String> response;
+                Map<String, Object> payload = Map.of(
+                        "name",       nameField.getText().trim(),
+                        "roomType",   typeComboBox.getValue(),
+                        "address",    addressArea.getText().trim(),
+                        "openTime",   openTimeField.getText().trim(),
+                        "closeTime",  closeTimeField.getText().trim(),
+                        "roomStatus", statusComboBox.getValue()
+                );
 
-                // ✅ Dùng ApiConfig.ROOMS thay cho ApiConfig.ROOM
+                HttpResponse<String> response;
                 if (room == null) {
-                    response = ApiClient.getInstance()
-                            .post(ApiConfig.ROOMS, toSave);
+                    response = ApiClient.getInstance().post(ApiConfig.ROOMS, payload);
                 } else {
-                    toSave.setId(room.getId());
-                    response = ApiClient.getInstance()
-                            .put(ApiConfig.ROOMS + "/" + room.getId(), toSave);
+                    response = ApiClient.getInstance().put(
+                            ApiConfig.ROOMS + "/" + room.getId(), payload
+                    );
                 }
 
                 if (response.statusCode() == 200 || response.statusCode() == 201) {
                     Platform.runLater(() -> {
                         AlertHelper.showInfo("Success", "Room saved successfully.");
-                        if (parentController != null) {
-                            parentController.onRoomSaved();
-                        }
+                        if (parentController != null) parentController.onRoomSaved();
                         closeWindow();
                     });
                 } else {
@@ -113,7 +114,6 @@ public class RoomFormController implements Initializable {
                 });
             }
         };
-
         new Thread(saveTask).start();
     }
 
@@ -127,29 +127,23 @@ public class RoomFormController implements Initializable {
             AlertHelper.showWarning("Validation Error", "Room name is required.");
             return false;
         }
-        if (!ValidationUtil.isValidInteger(capacityField.getText())) {
-            AlertHelper.showWarning("Validation Error", "Please enter a valid capacity.");
+        if (!ValidationUtil.isNotEmpty(addressArea.getText())) {
+            AlertHelper.showWarning("Validation Error", "Address is required.");
             return false;
         }
-        if (!hourlyRateField.getText().trim().isEmpty()
-                && !ValidationUtil.isValidNumber(hourlyRateField.getText())) {
-            AlertHelper.showWarning("Validation Error", "Please enter a valid hourly rate.");
+        try {
+            LocalTime.parse(openTimeField.getText().trim());
+        } catch (Exception e) {
+            AlertHelper.showWarning("Validation Error", "Open time must be HH:mm.");
+            return false;
+        }
+        try {
+            LocalTime.parse(closeTimeField.getText().trim());
+        } catch (Exception e) {
+            AlertHelper.showWarning("Validation Error", "Close time must be HH:mm.");
             return false;
         }
         return true;
-    }
-
-    private Room createRoomFromForm() {
-        Room r = new Room();
-        r.setName(nameField.getText().trim());
-        r.setType(typeComboBox.getValue());
-        r.setCapacity(Integer.parseInt(capacityField.getText().trim()));
-        r.setStatus(statusComboBox.getValue());
-        r.setDescription(descriptionArea.getText().trim());
-        if (!hourlyRateField.getText().trim().isEmpty()) {
-            r.setHourlyRate(Double.parseDouble(hourlyRateField.getText().trim()));
-        }
-        return r;
     }
 
     private void setLoading(boolean loading) {

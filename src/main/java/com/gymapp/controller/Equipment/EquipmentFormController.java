@@ -1,10 +1,13 @@
 package com.gymapp.controller.Equipment;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.gymapp.api.ApiClient;
 import com.gymapp.api.ApiConfig;
 import com.gymapp.model.Equipment;
+import com.gymapp.model.Room;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,11 +16,13 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.net.http.HttpResponse;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class EquipmentFormController implements Initializable {
 
     @FXML private Label titleLabel;
+    @FXML private ComboBox<Room> roomComboBox;
     @FXML private TextField nameField;
     @FXML private TextField typeField;
     @FXML private ComboBox<String> statusComboBox;
@@ -33,16 +38,59 @@ public class EquipmentFormController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // Load status options
         statusComboBox.setItems(FXCollections.observableArrayList(
                 "ACTIVE", "MAINTENANCE", "OUT_OF_ORDER", "RETIRED"
         ));
         statusComboBox.setValue("ACTIVE");
+
+        // Load rooms for assignment
+        progressIndicator.setVisible(true);
+        Task<Void> loadRoomsTask = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                HttpResponse<String> resp = ApiClient.getInstance().get(ApiConfig.ROOMS);
+                if (resp.statusCode() == 200) {
+                    List<Room> rooms = ApiClient.getInstance()
+                            .getObjectMapper()
+                            .readValue(resp.body(), new TypeReference<List<Room>>() {});
+                    Platform.runLater(() -> {
+                        ObservableList<Room> items = FXCollections.observableArrayList(rooms);
+                        roomComboBox.setItems(items);
+                        // Nếu đang ở chế độ sửa, chọn đúng phòng
+                        if (equipment != null && equipment.getRoom() != null) {
+                            roomComboBox.setValue(equipment.getRoom());
+                        } else if (!items.isEmpty()) {
+                            roomComboBox.setValue(items.get(0));
+                        }
+                    });
+                } else {
+                    Platform.runLater(() ->
+                            showAlert("Error", "Failed to load rooms.", Alert.AlertType.ERROR)
+                    );
+                }
+                return null;
+            }
+            @Override protected void succeeded() { progressIndicator.setVisible(false); }
+            @Override protected void failed() {
+                Platform.runLater(() -> {
+                    progressIndicator.setVisible(false);
+                    showAlert("Error", "Connection failed. Please try again.", Alert.AlertType.ERROR);
+                });
+            }
+        };
+        new Thread(loadRoomsTask).start();
     }
 
+    /** Called by parent to switch into Edit mode */
     public void setEquipment(Equipment equipment) {
         this.equipment = equipment;
         if (equipment != null) {
             titleLabel.setText("Edit Equipment");
+            // select room (sẽ được set lại khi loadRoomsTask chạy xong)
+            if (roomComboBox.getItems() != null && !roomComboBox.getItems().isEmpty() && equipment.getRoom() != null) {
+                roomComboBox.setValue(equipment.getRoom());
+            }
             nameField.setText(equipment.getName());
             typeField.setText(equipment.getType());
             statusComboBox.setValue(equipment.getStatus());
@@ -70,8 +118,6 @@ public class EquipmentFormController implements Initializable {
             protected Void call() throws Exception {
                 Equipment toSave = createEquipmentFromForm();
                 HttpResponse<String> response;
-
-                // --- dùng ApiConfig.EQUIPMENTS thay cho ApiConfig.EQUIPMENT ---
                 if (equipment == null) {
                     response = ApiClient.getInstance()
                             .post(ApiConfig.EQUIPMENTS, toSave);
@@ -84,14 +130,12 @@ public class EquipmentFormController implements Initializable {
                 if (response.statusCode() == 200 || response.statusCode() == 201) {
                     Platform.runLater(() -> {
                         showAlert("Success", "Equipment saved successfully.", Alert.AlertType.INFORMATION);
-                        if (parentController != null) {
-                            parentController.onEquipmentSaved();
-                        }
+                        if (parentController != null) parentController.onEquipmentSaved();
                         closeWindow();
                     });
                 } else {
                     Platform.runLater(() ->
-                            showAlert("Error", "Failed to save equipment.")
+                            showAlert("Error", "Failed to save equipment.", Alert.AlertType.ERROR)
                     );
                 }
                 return null;
@@ -101,7 +145,7 @@ public class EquipmentFormController implements Initializable {
             @Override protected void failed() {
                 Platform.runLater(() -> {
                     setLoading(false);
-                    showAlert("Error", "Connection failed. Please try again.");
+                    showAlert("Error", "Connection failed. Please try again.", Alert.AlertType.ERROR);
                 });
             }
         };
@@ -114,6 +158,10 @@ public class EquipmentFormController implements Initializable {
     }
 
     private boolean validateInput() {
+        if (roomComboBox.getValue() == null) {
+            showAlert("Validation Error", "Please select a room.", Alert.AlertType.WARNING);
+            return false;
+        }
         if (nameField.getText().trim().isEmpty()) {
             showAlert("Validation Error", "Equipment name is required.", Alert.AlertType.WARNING);
             return false;
@@ -135,6 +183,7 @@ public class EquipmentFormController implements Initializable {
 
     private Equipment createEquipmentFromForm() {
         Equipment e = new Equipment();
+        e.setRoom(roomComboBox.getValue());
         e.setName(nameField.getText().trim());
         e.setType(typeField.getText().trim());
         e.setStatus(statusComboBox.getValue());
@@ -157,21 +206,12 @@ public class EquipmentFormController implements Initializable {
         });
     }
 
-    // Giữ nguyên phương thức 3 tham số
     private void showAlert(String title, String message, Alert.AlertType type) {
         Alert a = new Alert(type);
         a.setTitle(title);
         a.setHeaderText(null);
         a.setContentText(message);
         a.showAndWait();
-    }
-
-// Thêm overload 2 tham số để mặc định dùng ALERT ERROR
-    /**
-     * Hiển thị Alert loại ERROR, chỉ cần truyền title và message
-     */
-    private void showAlert(String title, String message) {
-        showAlert(title, message, Alert.AlertType.ERROR);
     }
 
     private void closeWindow() {

@@ -13,7 +13,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -24,14 +27,17 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class RoomController implements Initializable {
-
     @FXML private TableView<Room> roomTable;
-    @FXML private TableColumn<Room, Long> idColumn;
+    @FXML private TableColumn<Room, Long>   idColumn;
     @FXML private TableColumn<Room, String> nameColumn;
-    @FXML private TableColumn<Room, String> typeColumn;
-    @FXML private TableColumn<Room, Integer> capacityColumn;
-    @FXML private TableColumn<Room, String> statusColumn;
-    @FXML private TableColumn<Room, Double> rateColumn;
+    @FXML private TableColumn<Room, String> roomTypeColumn;
+    @FXML private TableColumn<Room, String> addressColumn;
+    @FXML private TableColumn<Room, String> openTimeColumn;
+    @FXML private TableColumn<Room, String> closeTimeColumn;
+    @FXML private TableColumn<Room, String> roomStatusColumn;
+    /** Cột mới để hiển thị số thiết bị trong mỗi phòng */
+    @FXML private TableColumn<Room, Integer> equipmentCountColumn;
+
     @FXML private Button addButton;
     @FXML private Button editButton;
     @FXML private Button deleteButton;
@@ -49,16 +55,21 @@ public class RoomController implements Initializable {
     private void setupTable() {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
-        capacityColumn.setCellValueFactory(new PropertyValueFactory<>("capacity"));
-        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
-        rateColumn.setCellValueFactory(new PropertyValueFactory<>("hourlyRate"));
+        roomTypeColumn.setCellValueFactory(new PropertyValueFactory<>("roomType"));
+        addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
+        openTimeColumn.setCellValueFactory(new PropertyValueFactory<>("openTime"));
+        closeTimeColumn.setCellValueFactory(new PropertyValueFactory<>("closeTime"));
+        roomStatusColumn.setCellValueFactory(new PropertyValueFactory<>("roomStatus"));
+        // Thiết lập cell factory cho cột đếm equipmentCount
+        equipmentCountColumn.setCellValueFactory(
+                new PropertyValueFactory<>("equipmentCount")
+        );
 
         roomTable.setItems(roomList);
         roomTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
-            boolean sel = newSel != null;
-            editButton.setDisable(!sel);
-            deleteButton.setDisable(!sel);
+            boolean has = newSel != null;
+            editButton.setDisable(!has);
+            deleteButton.setDisable(!has);
         });
     }
 
@@ -68,17 +79,13 @@ public class RoomController implements Initializable {
         Task<Void> task = new Task<>() {
             @Override
             protected Void call() throws Exception {
-                // ✅ Dùng ApiConfig.ROOMS thay cho ApiConfig.ROOM
-                HttpResponse<String> response = ApiClient.getInstance()
-                        .get(ApiConfig.ROOMS);
+                HttpResponse<String> response = ApiClient.getInstance().get(ApiConfig.ROOMS);
 
                 if (response.statusCode() == 200) {
                     List<Room> list = ApiClient.getInstance()
                             .getObjectMapper()
                             .readValue(response.body(), new TypeReference<List<Room>>() {});
-                    Platform.runLater(() -> {
-                        roomList.setAll(list);
-                    });
+                    Platform.runLater(() -> roomList.setAll(list));
                 } else {
                     Platform.runLater(() ->
                             AlertHelper.showError("Error", "Failed to load room data.")
@@ -86,6 +93,7 @@ public class RoomController implements Initializable {
                 }
                 return null;
             }
+
             @Override protected void succeeded() { setLoading(false); }
             @Override protected void failed() {
                 Platform.runLater(() -> {
@@ -116,7 +124,6 @@ public class RoomController implements Initializable {
         Task<Void> task = new Task<>() {
             @Override
             protected Void call() throws Exception {
-                // ✅ Dùng ApiConfig.ROOMS thay cho ApiConfig.ROOM
                 HttpResponse<String> resp = ApiClient.getInstance()
                         .delete(ApiConfig.ROOMS + "/" + room.getId());
 
@@ -145,7 +152,9 @@ public class RoomController implements Initializable {
 
     private void openRoomForm(Room room) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Room/RoomForm.fxml"));
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/fxml/Room/RoomForm.fxml")
+            );
             Scene scene = new Scene(loader.load(), 450, 500);
             RoomFormController ctrl = loader.getController();
             ctrl.setRoom(room);
