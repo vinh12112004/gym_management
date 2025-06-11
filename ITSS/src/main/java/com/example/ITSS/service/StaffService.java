@@ -41,4 +41,18 @@ public class StaffService {
     public void delete(Long id) {
         repo.deleteById(id);
     }
+
+    public Staff getByEmail(String email) {
+        return repo.findByEmail(email).orElse(null);
+    }
+
+    public Staff updateByEmail(String email, Staff updatedStaff) {
+        Staff existing = repo.findByEmail(email).orElse(null);
+        if (existing == null) return null;
+        existing.setFirstName(updatedStaff.getFirstName());
+        existing.setLastName(updatedStaff.getLastName());
+        existing.setPhone(updatedStaff.getPhone());
+        // ...cập nhật các trường khác nếu cần...
+        return repo.save(existing);
+    }
 }

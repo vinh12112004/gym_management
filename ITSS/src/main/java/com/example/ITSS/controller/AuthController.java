@@ -63,6 +63,7 @@ public class AuthController {
                     .orElse(null);
             Long id = dbUser != null ? dbUser.getId() : null;
             String username = dbUser != null ? dbUser.getUsername() : "";
+            String email = dbUser != null ? dbUser.getEmail() : "";
             Set<String> roles = dbUser != null
                     ? dbUser.getRoles().stream().map(Role::getName).collect(Collectors.toSet())
                     : Set.of();
@@ -71,6 +72,7 @@ public class AuthController {
                     "token", token,
                     "id", id,
                     "username", username,
+                    "email", email,
                     "roles", roles
             ));
         } catch (Exception e) {
@@ -91,8 +93,18 @@ public class AuthController {
         Object rolesObj = req.get("roles");
         if (rolesObj instanceof Iterable<?>) {
             roles = StreamSupport.stream(((Iterable<?>) rolesObj).spliterator(), false)
-                    .map(r -> roleRepository.findByName(String.valueOf(r))
-                            .orElseGet(() -> roleRepository.save(new Role(null, String.valueOf(r)))))
+                    .map(r -> {
+                        if (r instanceof Map) {
+                            Object nameObj = ((Map<?, ?>) r).get("name");
+                            String roleName = nameObj != null ? nameObj.toString() : null;
+                            return roleRepository.findByName(roleName)
+                                    .orElseGet(() -> roleRepository.save(new Role(null, roleName)));
+                        } else {
+                            String roleName = String.valueOf(r);
+                            return roleRepository.findByName(roleName)
+                                    .orElseGet(() -> roleRepository.save(new Role(null, roleName)));
+                        }
+                    })
                     .collect(Collectors.toSet());
         }
         if (roles == null || roles.isEmpty()) {

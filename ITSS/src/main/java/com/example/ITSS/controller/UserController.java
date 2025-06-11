@@ -94,4 +94,68 @@ public class UserController {
         userRepository.save(user);
         return ResponseEntity.ok(user);
     }
+    @GetMapping("/email/{email}")
+    public ResponseEntity<?> getUserByEmail(@PathVariable String email) {
+        Optional<User> userOpt = userRepository.findByEmail(email);
+        if (userOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        User user = userOpt.get();
+
+        // Lấy role
+        Set<String> roles = user.getRoles().stream().map(Role::getName).collect(Collectors.toSet());
+
+        // Tạo response chứa thông tin user + họ tên nếu có
+        String firstName = null;
+        String lastName = null;
+        if (roles.contains("MEMBER")) {
+            var member = memberRepository.findByEmail(email);
+            if (member.isPresent()) {
+                firstName = member.get().getFirstName();
+                lastName = member.get().getLastName();
+            }
+        } else if (roles.contains("MANAGER") || roles.contains("TRAINER") || roles.contains("STAFF")) {
+            var staff = staffRepository.findByEmail(email);
+            if (staff.isPresent()) {
+                firstName = staff.get().getFirstName();
+                lastName = staff.get().getLastName();
+            }
+        }
+
+        // Tạo response custom
+        var response = new java.util.HashMap<String, Object>();
+        response.put("id", user.getId());
+        response.put("email", user.getEmail());
+        response.put("username", user.getUsername());
+        response.put("roles", roles);
+        response.put("firstName", firstName);
+        response.put("lastName", lastName);
+
+        return ResponseEntity.ok(response);
+    }
+    @PutMapping("/email/{email}")
+    public ResponseEntity<User> updateUserByEmail(@PathVariable String email, @RequestBody User updatedUser) {
+        Optional<User> userOpt = userRepository.findByEmail(email);
+        if (userOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        User user = userOpt.get();
+
+        // Cập nhật password nếu có
+        if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        }
+
+        // Cập nhật roles nếu có
+        if (updatedUser.getRoles() != null && !updatedUser.getRoles().isEmpty()) {
+            Set<Role> newRoles = updatedUser.getRoles().stream()
+                    .map(r -> roleRepository.findByName(r.getName())
+                            .orElseThrow(() -> new RuntimeException("Role not found: " + r.getName())))
+                    .collect(Collectors.toSet());
+            user.setRoles(newRoles);
+        }
+
+        userRepository.save(user);
+        return ResponseEntity.ok(user);
+    }
 }

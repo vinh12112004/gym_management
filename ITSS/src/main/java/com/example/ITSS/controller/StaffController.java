@@ -42,4 +42,24 @@ public class StaffController {
         svc.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<Staff> getByEmail(@PathVariable String email) {
+        Staff staff = svc.getByEmail(email);
+        if (staff != null) {
+            return ResponseEntity.ok(staff);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/email/{email}")
+    public ResponseEntity<Staff> updateByEmail(@PathVariable String email, @RequestBody Staff staff) {
+        Staff updated = svc.updateByEmail(email, staff);
+        if (updated != null) {
+            return ResponseEntity.ok(updated);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

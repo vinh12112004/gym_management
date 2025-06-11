@@ -27,6 +27,16 @@ public class MemberController {
         return svc.getById(id);
     }
 
+    @GetMapping("/email/{email}")
+    public ResponseEntity<Member> getByEmail(@PathVariable String email) {
+        Member member = svc.getByEmail(email);
+        if (member != null) {
+            return ResponseEntity.ok(member);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @PostMapping
     public Member create(@RequestBody Member m) {
         return svc.create(m);
@@ -41,5 +51,15 @@ public class MemberController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         svc.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/email/{email}")
+    public ResponseEntity<Member> updateByEmail(@PathVariable String email, @RequestBody Member m) {
+        Member updated = svc.updateByEmail(email, m);
+        if (updated != null) {
+            return ResponseEntity.ok(updated);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
