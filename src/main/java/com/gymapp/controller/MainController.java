@@ -16,7 +16,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
-    
+
     @FXML private Label userLabel;
     @FXML private Button logoutButton;
     @FXML private StackPane contentArea;
@@ -29,9 +29,11 @@ public class MainController implements Initializable {
     @FXML private Button feedbackBtn;
     @FXML private Button usersBtn;
     @FXML private Button staffBtn;
+    @FXML private Button profileBtn;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        System.out.println("profileBtn is null? " + (profileBtn == null));
         userLabel.setText("Welcome, " + SessionManager.getInstance().getCurrentUser());
         String role = SessionManager.getInstance().getCurrentRole();
         if ("TRAINER".equalsIgnoreCase(role)) {
@@ -65,12 +67,27 @@ public class MainController implements Initializable {
             usersBtn.setManaged(false); // Ẩn hoàn toàn khỏi layout
         }
         if("MANAGER".equalsIgnoreCase(role)) {
+
+            roomsBtn.setVisible(false);
+            roomsBtn.setManaged(false);
+            equipmentBtn.setVisible(false);
+            equipmentBtn.setManaged(false);
             sessionsBtn.setVisible(false);
             sessionsBtn.setManaged(false);
+            profileBtn.setVisible(false);
+            profileBtn.setManaged(false);
         }
+        if("OWNER".equalsIgnoreCase(role)) {
+            sessionsBtn.setVisible(false);
+            sessionsBtn.setManaged(false);
+            profileBtn.setVisible(false);
+            profileBtn.setManaged(false);
+        }
+        System.out.println("Role: " + role);
+        System.out.println("ProfileBtn visible: " + profileBtn.isVisible());
         showDashboard(); // Show dashboard by default
     }
-    
+
     @FXML
     private void handleLogout() {
         SessionManager.getInstance().logout();
@@ -85,43 +102,43 @@ public class MainController implements Initializable {
             showAlert("Error", "Could not load login form.");
         }
     }
-    
+
     @FXML
     private void showDashboard() {
         loadContent("/fxml/Dashboard.fxml");
         setActiveButton(dashboardBtn);
     }
-    
+
     @FXML
     private void showEquipment() {
         loadContent("/fxml/Equipment.fxml");
         setActiveButton(equipmentBtn);
     }
-    
+
     @FXML
     private void showMembers() {
         loadContent("/fxml/Members.fxml");
         setActiveButton(membersBtn);
     }
-    
+
     @FXML
     private void showPackages() {
         loadContent("/fxml/Packages.fxml");
         setActiveButton(packagesBtn);
     }
-    
+
     @FXML
     private void showRooms() {
         loadContent("/fxml/Rooms.fxml");
         setActiveButton(roomsBtn);
     }
-    
+
     @FXML
     private void showSessions() {
         loadContent("/fxml/WorkoutSessions.fxml");
         setActiveButton(sessionsBtn);
     }
-    
+
     @FXML
     private void showFeedback() {
         loadContent("/fxml/Feedback.fxml");
@@ -139,7 +156,11 @@ public class MainController implements Initializable {
         loadContent("/fxml/Staff.fxml");
         setActiveButton(staffBtn);
     }
-    
+    @FXML
+    private void showProfile() {
+        loadContent("/fxml/ProfileForm.fxml");
+        setActiveButton(profileBtn);
+    }
     private void loadContent(String fxmlPath) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
@@ -152,8 +173,8 @@ public class MainController implements Initializable {
         }
     }
 
-    
-    
+
+
     private void setActiveButton(Button activeButton) {
         // Reset all button styles
         dashboardBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;");
@@ -165,11 +186,11 @@ public class MainController implements Initializable {
         feedbackBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;");
         usersBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;"); // Thêm dòng này
         staffBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;");
-
+        profileBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;");
         // Set active button style
         activeButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;");
     }
-    
+
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);

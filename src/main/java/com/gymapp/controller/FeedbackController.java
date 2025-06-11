@@ -10,9 +10,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.net.http.HttpResponse;
@@ -77,7 +81,7 @@ public class FeedbackController implements Initializable {
     }
     
     @FXML
-    private void refreshData() {
+    public void refreshData() {
         setLoading(true);
         
         Task<Void> refreshTask = new Task<Void>() {
@@ -212,5 +216,69 @@ public class FeedbackController implements Initializable {
             updateStatusButton.setDisable(loading);
             refreshButton.setDisable(loading);
         });
+    }
+
+    @FXML private void handleAdd()    { openFeedbackForm(null); }
+    @FXML private void handleEdit()   {
+        Feedback sel = feedbackTable.getSelectionModel().getSelectedItem();
+        if (sel != null) openFeedbackForm(sel);
+    }
+    @FXML private void handleDelete() {
+        Feedback sel = feedbackTable.getSelectionModel().getSelectedItem();
+        if (sel != null && AlertHelper.showConfirmation(
+                "Confirm Delete",
+                "Are you sure you want to delete this feedback?")) {
+            deleteFeedback(sel);
+        }
+    }
+
+    private void deleteFeedback(Feedback feedback) {
+        setLoading(true);
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                HttpResponse<String> resp = ApiClient.getInstance()
+                        .delete(ApiConfig.FEEDBACK + "/" + feedback.getId());
+
+                if (resp.statusCode() == 200 || resp.statusCode() == 204) {
+                    Platform.runLater(() -> {
+                        feedbackList.remove(feedback);
+                        AlertHelper.showInfo("Success", "Feedback deleted successfully.");
+                    });
+                } else {
+                    Platform.runLater(() ->
+                            AlertHelper.showError("Error", "Failed to delete feedback.")
+                    );
+                }
+                return null;
+            }
+            @Override protected void succeeded() { setLoading(false); }
+            @Override protected void failed() {
+                Platform.runLater(() -> {
+                    setLoading(false);
+                    AlertHelper.showError("Error", "Connection failed. Please try again.");
+                });
+            }
+        };
+        new Thread(task).start();
+    }
+
+    private void openFeedbackForm(Feedback feedback) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/FeedbackForm.fxml"));
+            Scene scene = new Scene(loader.load(), 500, 400);
+            FeedbackFormController ctl = loader.getController();
+            ctl.setFeedback(feedback);
+            ctl.setParentController(this);
+
+            Stage stage = new Stage();
+            stage.setTitle(feedback == null ? "Add Feedback" : "Edit Feedback");
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.showAndWait();
+        } catch (Exception e) {
+            AlertHelper.showError("Error", "Could not load feedback form.");
+        }
     }
 }

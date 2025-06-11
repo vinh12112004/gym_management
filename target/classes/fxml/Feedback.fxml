@@ -59,6 +59,15 @@
             <Button fx:id="updateStatusButton" disable="true" mnemonicParsing="false" onAction="#handleUpdateStatus" text="Update Status" />
          </children>
       </HBox>
+      <HBox alignment="CENTER_LEFT" spacing="10.0">
+         <children>
+            <Button fx:id="addButton" mnemonicParsing="false" onAction="#handleAdd" text="Add Feedback" />
+            <Button fx:id="editButton" disable="true" mnemonicParsing="false" onAction="#handleEdit" text="Edit" />
+            <Button fx:id="deleteButton" disable="true" mnemonicParsing="false" onAction="#handleDelete" text="Delete" />
+            <Button fx:id="viewButton" disable="true" mnemonicParsing="false" onAction="#handleView" text="View Details" />
+            <Button fx:id="updateStatusButton" disable="true" mnemonicParsing="false" onAction="#handleUpdateStatus" text="Update Status" />
+         </children>
+      </HBox>
       <ProgressIndicator fx:id="progressIndicator" visible="false" />
    </children>
 </VBox>

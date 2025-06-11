@@ -7,6 +7,7 @@ public class SessionManager {
     private String authToken;
     private String currentUser;
     private String currentRole;
+    private String email;
     private Stage primaryStage;
 
     private SessionManager() {}
@@ -18,16 +19,23 @@ public class SessionManager {
         return instance;
     }
 
-    public void login(String token, String username, String role) {
+    public void login(String token, String username, String role, String email) {
         this.authToken = token;
         this.currentUser = username;
         this.currentRole = role;
+        this.email = email;
+    }
+
+    // Overload cũ để không lỗi nếu gọi từ code cũ
+    public void login(String token, String username, String role) {
+        this.login(token, username, role, null);
     }
 
     public void logout() {
         this.authToken = null;
         this.currentUser = null;
         this.currentRole = null;
+        this.email = null;
     }
 
     public boolean isLoggedIn() {
@@ -46,8 +54,16 @@ public class SessionManager {
         return currentRole;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public void setCurrentRole(String role) {
         this.currentRole = role;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Stage getPrimaryStage() {

@@ -45,6 +45,7 @@ public class LoginController {
                     JsonNode jsonResponse = ApiClient.getInstance().getObjectMapper().readTree(response.body());
                     String token = jsonResponse.get("token").asText();
                     String usernameResp = jsonResponse.get("username").asText();
+                    String emailResp = jsonResponse.has("email") ? jsonResponse.get("email").asText() : ""; // Lấy email từ response
                     // Lấy role đầu tiên từ mảng roles
                     String role = "";
                     JsonNode rolesNode = jsonResponse.get("roles");
@@ -53,8 +54,9 @@ public class LoginController {
                     }
 
                     String finalRole = role;
+                    String finalEmail = emailResp;
                     Platform.runLater(() -> {
-                        SessionManager.getInstance().login(token, usernameResp, finalRole);
+                        SessionManager.getInstance().login(token, usernameResp, finalRole, finalEmail); // Lưu cả email
                         openMainWindow();
                     });
                 } else {
