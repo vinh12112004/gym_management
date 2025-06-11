@@ -30,6 +30,9 @@ public class MainController implements Initializable {
     @FXML private Button usersBtn;
     @FXML private Button staffBtn;
     @FXML private Button profileBtn;
+    @FXML private Button membershipPakagesBtn;
+    @FXML private Button memberPakagesBtn;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -65,6 +68,8 @@ public class MainController implements Initializable {
             roomsBtn.setManaged(false); // Ẩn hoàn toàn khỏi layout
             usersBtn.setVisible(false);
             usersBtn.setManaged(false); // Ẩn hoàn toàn khỏi layout
+            membershipPakagesBtn.setVisible(false);
+            membershipPakagesBtn.setManaged(false);
         }
         if("MANAGER".equalsIgnoreCase(role)) {
 
@@ -76,6 +81,8 @@ public class MainController implements Initializable {
             sessionsBtn.setManaged(false);
             profileBtn.setVisible(false);
             profileBtn.setManaged(false);
+            memberPakagesBtn.setVisible(false);
+            memberPakagesBtn.setManaged(false);
         }
         if("OWNER".equalsIgnoreCase(role)) {
             sessionsBtn.setVisible(false);
@@ -92,7 +99,7 @@ public class MainController implements Initializable {
     private void handleLogout() {
         SessionManager.getInstance().logout();
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Auth/Login.fxml"));
             Scene scene = new Scene(loader.load(), 400, 300);
             Stage stage = (Stage) logoutButton.getScene().getWindow();
             stage.setScene(scene);
@@ -105,62 +112,75 @@ public class MainController implements Initializable {
 
     @FXML
     private void showDashboard() {
-        loadContent("/fxml/Dashboard.fxml");
+        loadContent("/fxml/Dashboard/Dashboard.fxml");
         setActiveButton(dashboardBtn);
     }
 
     @FXML
     private void showEquipment() {
-        loadContent("/fxml/Equipment.fxml");
+        loadContent("/fxml/Equipment/Equipment.fxml");
         setActiveButton(equipmentBtn);
     }
 
     @FXML
     private void showMembers() {
-        loadContent("/fxml/Members.fxml");
+        loadContent("/fxml/Member/Members.fxml");
         setActiveButton(membersBtn);
     }
 
     @FXML
     private void showPackages() {
-        loadContent("/fxml/Packages.fxml");
+        loadContent("/fxml/Package/Packages.fxml");
         setActiveButton(packagesBtn);
     }
 
     @FXML
     private void showRooms() {
-        loadContent("/fxml/Rooms.fxml");
+        loadContent("/fxml/Room/Rooms.fxml");
         setActiveButton(roomsBtn);
     }
 
     @FXML
     private void showSessions() {
-        loadContent("/fxml/WorkoutSessions.fxml");
+        loadContent("/fxml/WorkoutSession/WorkoutSessions.fxml");
         setActiveButton(sessionsBtn);
     }
 
     @FXML
     private void showFeedback() {
-        loadContent("/fxml/Feedback.fxml");
+        loadContent("/fxml/Feedback/Feedback.fxml");
         setActiveButton(feedbackBtn);
     }
 
     @FXML
     private void showUsers() {
-        loadContent("/fxml/Users.fxml");
+        loadContent("/fxml/User/Users.fxml");
         setActiveButton(usersBtn);
     }
 
     @FXML
     private void showStaff() {
-        loadContent("/fxml/Staff.fxml");
+        loadContent("/fxml/Staff/Staff.fxml");
         setActiveButton(staffBtn);
     }
     @FXML
     private void showProfile() {
-        loadContent("/fxml/ProfileForm.fxml");
+        loadContent("/fxml/Profile/ProfileForm.fxml");
         setActiveButton(profileBtn);
     }
+
+    @FXML
+    private void showMembershipPakages(){
+        loadContent("/fxml/MembershipPackage/MembershipPackage.fxml");
+        setActiveButton(membershipPakagesBtn);
+    }
+
+    @FXML
+    private void showMemberPakages() {
+        loadContent("/fxml/MemberPackage/MemberPackages.fxml");
+        setActiveButton(memberPakagesBtn);
+    }
+
     private void loadContent(String fxmlPath) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
@@ -187,6 +207,9 @@ public class MainController implements Initializable {
         usersBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;"); // Thêm dòng này
         staffBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;");
         profileBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;");
+        membershipPakagesBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;");
+        memberPakagesBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;");
+
         // Set active button style
         activeButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;");
     }

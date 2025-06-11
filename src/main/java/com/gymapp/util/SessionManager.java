@@ -10,6 +10,7 @@ public class SessionManager {
     private String email;
     private Stage primaryStage;
 
+
     private SessionManager() {}
 
     public static SessionManager getInstance() {
@@ -27,9 +28,9 @@ public class SessionManager {
     }
 
     // Overload cũ để không lỗi nếu gọi từ code cũ
-    public void login(String token, String username, String role) {
-        this.login(token, username, role, null);
-    }
+//    public void login(String token, String username, String role, String email) {
+//        this.login(token, username, role, email);
+//    }
 
     public void logout() {
         this.authToken = null;
@@ -73,4 +74,5 @@ public class SessionManager {
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
+
 }

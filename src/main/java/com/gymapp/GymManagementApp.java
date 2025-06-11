@@ -14,7 +14,7 @@ public class GymManagementApp extends Application {
         SessionManager.getInstance().setPrimaryStage(primaryStage);
         
         // Load login screen first
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Auth/Login.fxml"));
         Scene scene = new Scene(loader.load(), 400, 300);
         
         primaryStage.setTitle("Gym Management System");

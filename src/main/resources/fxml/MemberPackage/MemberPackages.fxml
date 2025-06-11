@@ -1,0 +1,11 @@
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<TableView fx:id="membershipPackageTable" xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.gymapp.controller.MemberPackage.MemberPackagesController">
+    <columns>
+        <TableColumn fx:id="packageNameColumn" text="Tên gói"/>
+        <TableColumn fx:id="startDateColumn" text="Ngày bắt đầu"/>
+        <TableColumn fx:id="endDateColumn" text="Ngày kết thúc"/>
+        <TableColumn fx:id="priceColumn" text="Giá"/>
+    </columns>
+</TableView>

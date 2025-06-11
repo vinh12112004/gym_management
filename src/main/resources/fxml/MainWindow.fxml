@@ -81,6 +81,16 @@
                   <Font name="Arial" size="14.0" />
                </font>
             </Button>
+            <Button fx:id="membershipPakagesBtn" mnemonicParsing="false" onAction="#showMembershipPakages" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-alignment: center-left; -fx-padding: 16; -fx-font-size: 14;" text="Membership Package">
+               <font>
+                  <Font name="Arial" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="memberPakagesBtn" mnemonicParsing="false" onAction="#showMemberPakages" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-alignment: center-left; -fx-padding: 16; -fx-font-size: 14;" text="Membership Package">
+               <font>
+                  <Font name="Arial" size="14.0" />
+               </font>
+            </Button>
          </children>
       </VBox>
    </left>
