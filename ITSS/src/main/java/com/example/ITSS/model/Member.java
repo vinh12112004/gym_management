@@ -62,4 +62,5 @@ public class Member {
     public void setMembershipType(String membershipType) { this.membershipType = membershipType; }
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+    public void setId(Long id) { this.id = id; }
 }
