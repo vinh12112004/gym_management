@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymapp.controller.Auth.LoginController">
+<VBox alignment="CENTER" spacing="20.0" stylesheets="@../../css/form.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymapp.controller.Auth.LoginController">
    <children>
       <Label text="Gym Management System">
          <font>

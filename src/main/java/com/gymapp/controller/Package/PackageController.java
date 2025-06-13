@@ -147,6 +147,7 @@ public class PackageController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Package/PackageForm.fxml"));
             Scene scene = new Scene(loader.load(), 500, 600);
+            scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
             PackageFormController ctr = loader.getController();
             ctr.setPackage(pkg);
             ctr.setParentController(this);

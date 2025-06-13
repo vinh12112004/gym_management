@@ -89,6 +89,7 @@ public class LoginController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Auth/Register.fxml"));
             Scene scene = new Scene(loader.load(), 400, 350);
+            scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
             Stage stage = (Stage) registerButton.getScene().getWindow();
             stage.setScene(scene);
         } catch (Exception e) {
@@ -102,6 +103,8 @@ public class LoginController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainWindow.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 800);
             Stage stage = (Stage) loginButton.getScene().getWindow();
+            scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
+
             stage.setScene(scene);
             stage.setMaximized(true);
         } catch (Exception e) {

@@ -32,6 +32,7 @@ public class MainController implements Initializable {
     @FXML private Button profileBtn;
     @FXML private Button membershipPakagesBtn;
     @FXML private Button memberPakagesBtn;
+    @FXML private Button traineesBtn;
 
 
     @Override
@@ -46,9 +47,19 @@ public class MainController implements Initializable {
             membersBtn.setManaged(false); // Ẩn hoàn toàn khỏi layout
             staffBtn.setVisible(false);
             staffBtn.setManaged(false);
+            equipmentBtn.setVisible(false);
+            equipmentBtn.setManaged(false);
+            packagesBtn.setVisible(false);
+            packagesBtn.setManaged(false);
+            memberPakagesBtn.setVisible(false);
+            memberPakagesBtn.setManaged(false);
             sessionsBtn.setVisible(false);
             sessionsBtn.setManaged(false);
             feedbackBtn.setVisible(false);
+            roomsBtn.setVisible(false);
+            roomsBtn.setManaged(false);
+            membershipPakagesBtn.setVisible(false);
+            membershipPakagesBtn.setManaged(false);
             feedbackBtn.setManaged(false); // Ẩn hoàn toàn khỏi layout
             usersBtn.setVisible(false);
             usersBtn.setManaged(false); // Ẩn hoàn toàn khỏi layout
@@ -70,6 +81,8 @@ public class MainController implements Initializable {
             usersBtn.setManaged(false); // Ẩn hoàn toàn khỏi layout
             membershipPakagesBtn.setVisible(false);
             membershipPakagesBtn.setManaged(false);
+            traineesBtn.setVisible(false);
+            traineesBtn.setManaged(false);
         }
         if("MANAGER".equalsIgnoreCase(role)) {
 
@@ -83,12 +96,22 @@ public class MainController implements Initializable {
             profileBtn.setManaged(false);
             memberPakagesBtn.setVisible(false);
             memberPakagesBtn.setManaged(false);
+            feedbackBtn.setVisible(false);
+            feedbackBtn.setManaged(false);
+            traineesBtn.setVisible(false);
+            traineesBtn.setManaged(false);
         }
         if("OWNER".equalsIgnoreCase(role)) {
             sessionsBtn.setVisible(false);
             sessionsBtn.setManaged(false);
             profileBtn.setVisible(false);
             profileBtn.setManaged(false);
+            memberPakagesBtn.setVisible(false);
+            memberPakagesBtn.setManaged(false);
+            feedbackBtn.setVisible(false);
+            feedbackBtn.setManaged(false);
+            traineesBtn.setVisible(false);
+            traineesBtn.setManaged(false);
         }
         System.out.println("Role: " + role);
         System.out.println("ProfileBtn visible: " + profileBtn.isVisible());
@@ -100,7 +123,7 @@ public class MainController implements Initializable {
         SessionManager.getInstance().logout();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Auth/Login.fxml"));
-            Scene scene = new Scene(loader.load(), 400, 300);
+            Scene scene = new Scene(loader.load(), 1200, 800);
             Stage stage = (Stage) logoutButton.getScene().getWindow();
             stage.setScene(scene);
             stage.setResizable(false);
@@ -181,6 +204,12 @@ public class MainController implements Initializable {
         setActiveButton(memberPakagesBtn);
     }
 
+    @FXML
+    private void showTrainees() {
+        loadContent("/fxml/Trainee/Trainees.fxml");
+        setActiveButton(traineesBtn);
+    }
+
     private void loadContent(String fxmlPath) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
@@ -196,22 +225,17 @@ public class MainController implements Initializable {
 
 
     private void setActiveButton(Button activeButton) {
-        // Reset all button styles
-        dashboardBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;");
-        equipmentBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;");
-        membersBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;");
-        packagesBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;");
-        roomsBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;");
-        sessionsBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;");
-        feedbackBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;");
-        usersBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;"); // Thêm dòng này
-        staffBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;");
-        profileBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;");
-        membershipPakagesBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;");
-        memberPakagesBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;");
-
-        // Set active button style
-        activeButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-alignment: center-left; -fx-padding: 15;");
+        Button[] buttons = {
+            dashboardBtn, equipmentBtn, membersBtn, packagesBtn, roomsBtn,
+            sessionsBtn, feedbackBtn, usersBtn, staffBtn, profileBtn,
+            membershipPakagesBtn, memberPakagesBtn, traineesBtn
+        };
+        for (Button btn : buttons) {
+            if (btn != null) btn.getStyleClass().remove("active");
+        }
+        if (activeButton != null && !activeButton.getStyleClass().contains("active")) {
+            activeButton.getStyleClass().add("active");
+        }
     }
 
     private void showAlert(String title, String message) {

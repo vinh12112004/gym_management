@@ -3,6 +3,7 @@ package com.gymapp.controller.MemberPackage;
 import com.gymapp.api.ApiClient;
 import com.gymapp.api.ApiConfig;
 import com.gymapp.model.MembershipPackage;
+import com.gymapp.model.Staff;
 import com.gymapp.util.SessionManager;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -21,8 +22,10 @@ public class MemberPackagesController {
     @FXML private TableColumn<MembershipPackage, String> startDateColumn;
     @FXML private TableColumn<MembershipPackage, String> endDateColumn;
     @FXML private TableColumn<MembershipPackage, Double> priceColumn;
+    @FXML private TableColumn<MembershipPackage, String> coachNameColumn; // Thêm dòng này
 
     private final ObservableList<MembershipPackage> membershipPackageList = FXCollections.observableArrayList();
+    private List<Staff> staffList; // Thêm dòng này
 
     @FXML
     public void initialize() {
@@ -32,50 +35,65 @@ public class MemberPackagesController {
         priceColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleObjectProperty<>(cellData.getValue().getPrice()));
         membershipPackageTable.setItems(membershipPackageList);
 
-        loadMemberPackages();
+        loadStaffAndMemberPackages(); // Đổi tên hàm để load staff trước
+    }
+
+    private void loadStaffAndMemberPackages() {
+        // Load staff trước
+        new Thread(() -> {
+            try {
+                HttpResponse<String> staffResp = ApiClient.getInstance().get(ApiConfig.STAFFS);
+                if (staffResp.statusCode() == 200) {
+                    staffList = ApiClient.getInstance().getObjectMapper()
+                            .readValue(staffResp.body(), new com.fasterxml.jackson.core.type.TypeReference<List<Staff>>() {});
+                }
+            } catch (Exception e) {
+                staffList = null;
+            }
+            // Sau khi load staff xong, load package
+            loadMemberPackages();
+        }).start();
     }
 
     private void loadMemberPackages() {
         String email = SessionManager.getInstance().getEmail();
-        System.out.println("[DEBUG] Email: " + email);
         if (email == null || email.isEmpty()) {
-            System.out.println("[DEBUG] Email is null or empty, aborting loadMemberPackages.");
             return;
         }
 
         new Thread(() -> {
             try {
-                System.out.println("[DEBUG] Calling API: " + ApiConfig.MEMBERS + "/email/" + email);
                 HttpResponse<String> resp = ApiClient.getInstance().get(ApiConfig.MEMBERS + "/email/" + email);
-                System.out.println("[DEBUG] Member API status: " + resp.statusCode());
-                System.out.println("[DEBUG] Member API body: " + resp.body());
                 if (resp.statusCode() == 200) {
                     com.fasterxml.jackson.databind.JsonNode node = ApiClient.getInstance().getObjectMapper().readTree(resp.body());
                     Long memberId = node.get("id").asLong();
-                    System.out.println("[DEBUG] memberId: " + memberId);
 
                     String pkgUrl = ApiConfig.MEMBERSHIP_PACKAGES + "/member/" + memberId;
-                    System.out.println("[DEBUG] Calling API: " + pkgUrl);
                     HttpResponse<String> pkgResp = ApiClient.getInstance().get(pkgUrl);
-                    System.out.println("[DEBUG] Packages API status: " + pkgResp.statusCode());
-                    System.out.println("[DEBUG] Packages JSON: " + pkgResp.body());
                     if (pkgResp.statusCode() == 200) {
                         List<MembershipPackage> list = ApiClient.getInstance().getObjectMapper()
                                 .readValue(pkgResp.body(), new com.fasterxml.jackson.core.type.TypeReference<List<MembershipPackage>>() {});
-                        System.out.println("[DEBUG] Loaded packages: " + list.size());
-                        for (MembershipPackage mp : list) {
-                            System.out.println("[DEBUG] Package: " + mp.getPackageName() + " | " + mp.getStartDate() + " - " + mp.getEndDate() + " | " + mp.getPrice());
-                        }
                         Platform.runLater(() -> {
                             membershipPackageList.clear();
                             membershipPackageList.addAll(list);
-                            System.out.println("[DEBUG] membershipPackageList size after addAll: " + membershipPackageList.size());
+
+                            // Map tên huấn luyện viên cho từng dòng
+                            coachNameColumn.setCellValueFactory(cellData -> {
+                                if (cellData.getValue().getCoach() == null || staffList == null) {
+                                    return new javafx.beans.property.SimpleStringProperty("");
+                                }
+                                Long coachId = cellData.getValue().getCoach().getId();
+                                String name = staffList.stream()
+                                        .filter(s -> s.getId().equals(coachId))
+                                        .map(s -> s.getFirstName() + " " + s.getLastName())
+                                        .findFirst().orElse("");
+                                return new javafx.beans.property.SimpleStringProperty(name);
+                            });
                         });
                     }
                 }
 
             } catch (Exception e) {
-                System.out.println("[DEBUG] Exception in loadMemberPackages:");
                 e.printStackTrace();
             }
         }).start();

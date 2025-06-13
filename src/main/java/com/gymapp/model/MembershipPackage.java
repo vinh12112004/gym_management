@@ -2,31 +2,23 @@ package com.gymapp.model;
 
 import java.time.LocalDate;
 
-public class MembershipPackage
-{
+public class MembershipPackage {
     private Long id;
-    private Long memberId;
-    private Long packageId;
-    private String packageName;
-    private String memberName;
+    private Member member;      // gửi object chỉ chứa id
+    private Package aPackage;   // gửi object chỉ chứa id
     private Double price;
     private LocalDate startDate;
     private LocalDate endDate;
+    private Staff coach;        // gửi object chỉ chứa id, hoặc null
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public Long getMemberId() { return memberId; }
-    public void setMemberId(Long memberId) { this.memberId = memberId; }
+    public Member getMember() { return member; }
+    public void setMember(Member member) { this.member = member; }
 
-    public Long getPackageId() { return packageId; }
-    public void setPackageId(Long packageId) { this.packageId = packageId; }
-
-    public String getPackageName() { return packageName; }
-    public void setPackageName(String packageName) { this.packageName = packageName; }
-
-    public String getMemberName() { return memberName; }
-    public void setMemberName(String memberName) { this.memberName = memberName; }
+    public Package getAPackage() { return aPackage; }
+    public void setAPackage(Package aPackage) { this.aPackage = aPackage; }
 
     public Double getPrice() { return price; }
     public void setPrice(Double price) { this.price = price; }
@@ -36,4 +28,15 @@ public class MembershipPackage
 
     public LocalDate getEndDate() { return endDate; }
     public void setEndDate(LocalDate endDate) { this.endDate = endDate; }
+
+    public Staff getCoach() { return coach; }
+    public void setCoach(Staff coach) { this.coach = coach; }
+
+    public String getMemberName() {
+        return member != null ? member.getFullName() : "";
+    }
+
+    public String getPackageName() {
+        return aPackage != null ? aPackage.getName() : "";
+    }
 }

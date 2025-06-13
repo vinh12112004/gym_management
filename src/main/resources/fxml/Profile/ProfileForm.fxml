@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox spacing="15.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymapp.controller.Profile.ProfileFormController">
+<VBox spacing="15.0" xmlns="http://javafx.com/javafx/11.0.1" stylesheets="@../../css/form.css" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymapp.controller.Profile.ProfileFormController">
     <children>
         <Label fx:id="titleLabel" text="Edit Profile">
             <font>
@@ -30,7 +30,7 @@
                 <Label text="Last Name:" GridPane.rowIndex="1" />
                 <TextField fx:id="lastNameField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <Label text="Email:" GridPane.rowIndex="2" />
-                <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="2" editable="false" />
                 <Label text="Phone:" GridPane.rowIndex="3" />
                 <TextField fx:id="phoneField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                 <Label text="Password:" GridPane.rowIndex="4" />

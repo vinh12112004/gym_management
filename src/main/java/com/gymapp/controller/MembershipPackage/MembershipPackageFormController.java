@@ -5,6 +5,7 @@ import com.gymapp.api.ApiConfig;
 import com.gymapp.model.MembershipPackage;
 import com.gymapp.model.Member;
 import com.gymapp.model.Package;
+import com.gymapp.model.Staff;
 import com.gymapp.util.AlertHelper;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -25,6 +26,9 @@ public class MembershipPackageFormController {
     @FXML private Label priceLabel;
     @FXML private Button saveButton;
     @FXML private Button cancelButton;
+    @FXML private CheckBox coachCheckBox;
+    @FXML private ComboBox<Staff> coachComboBox;
+    @FXML private Label chooseCoachLabel;
 
     @FXML
     public void initialize() {
@@ -84,6 +88,29 @@ public class MembershipPackageFormController {
             }
         });
 
+        new Thread(() -> {
+            try {
+                HttpResponse<String> resp = ApiClient.getInstance().get(ApiConfig.STAFFS);
+                List<Staff> staffs = ApiClient.getInstance().getObjectMapper()
+                        .readValue(resp.body(), new com.fasterxml.jackson.core.type.TypeReference<List<Staff>>() {});
+                // Lọc chỉ lấy TRAINER
+                List<Staff> trainers = staffs.stream()
+                        .filter(s -> "TRAINER".equalsIgnoreCase(s.getPosition()))
+                        .toList();
+                Platform.runLater(() -> coachComboBox.setItems(FXCollections.observableArrayList(trainers)));
+            } catch (Exception e) {
+                Platform.runLater(() -> AlertHelper.showError("Error", "Không tải được danh sách HLV"));
+            }
+        }).start();
+
+        // Hiện/ẩn ComboBox chọn HLV khi tích checkbox
+        coachCheckBox.selectedProperty().addListener((obs, oldVal, newVal) -> {
+            coachComboBox.setVisible(newVal);
+            coachComboBox.setManaged(newVal);
+            chooseCoachLabel.setVisible(newVal);
+            chooseCoachLabel.setManaged(newVal);
+        });
+
         // Khi chọn gói tập hoặc ngày bắt đầu thì tính ngày kết thúc và giá
         packageComboBox.valueProperty().addListener((obs, oldVal, newVal) -> updateEndDateAndPrice());
         startDatePicker.valueProperty().addListener((obs, oldVal, newVal) -> updateEndDateAndPrice());
@@ -118,14 +145,28 @@ public class MembershipPackageFormController {
         }
 
         MembershipPackage mp = new MembershipPackage();
-        mp.setMemberId(member.getId());
-        mp.setMemberName(member.getFullName());
-        mp.setPackageId(pack.getId());
-        mp.setPackageName(pack.getName());
+
+        // Gửi object chỉ chứa id cho member và aPackage
+        Member memberRef = new Member();
+        memberRef.setId(member.getId());
+        mp.setMember(memberRef);
+
+        Package packageRef = new Package();
+        packageRef.setId(pack.getId());
+        mp.setAPackage(packageRef);
+
         mp.setPrice(pack.getPrice());
         mp.setStartDate(startDate);
         mp.setEndDate(startDate.plusMonths(pack.getDurationMonths()));
 
+        // Nếu có HLV thì set coach (object chỉ chứa id), không thì để null
+        if (coachCheckBox.isSelected() && coachComboBox.getValue() != null) {
+            Staff coachRef = new Staff();
+            coachRef.setId(coachComboBox.getValue().getId());
+            mp.setCoach(coachRef);
+        } else {
+            mp.setCoach(null);
+        }
 
         new Thread(() -> {
             try {

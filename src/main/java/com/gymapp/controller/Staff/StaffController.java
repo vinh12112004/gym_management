@@ -98,7 +98,6 @@ public class StaffController implements Initializable {
         new Thread(task).start();
     }
 
-    @FXML private void handleAdd()    { openStaffForm(null); }
     @FXML private void handleEdit()   {
         Staff sel = staffTable.getSelectionModel().getSelectedItem();
         if (sel != null) openStaffForm(sel);
@@ -147,6 +146,8 @@ public class StaffController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Staff/StaffForm.fxml"));
             Scene scene = new Scene(loader.load(), 400, 400);
+            scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
+
             StaffFormController ctl = loader.getController();
             ctl.setStaff(staff);
             ctl.setParentController(this);
@@ -169,7 +170,6 @@ public class StaffController implements Initializable {
     private void setLoading(boolean loading) {
         Platform.runLater(() -> {
             progressIndicator.setVisible(loading);
-            addButton.setDisable(loading);
             editButton.setDisable(loading);
             deleteButton.setDisable(loading);
             refreshButton.setDisable(loading);

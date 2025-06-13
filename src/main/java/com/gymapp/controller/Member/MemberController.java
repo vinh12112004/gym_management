@@ -97,8 +97,6 @@ public class MemberController implements Initializable {
         };
         new Thread(task).start();
     }
-
-    @FXML private void handleAdd()    { openMemberForm(null); }
     @FXML private void handleEdit()   {
         Member sel = memberTable.getSelectionModel().getSelectedItem();
         if (sel != null) openMemberForm(sel);
@@ -148,6 +146,8 @@ public class MemberController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Member/MemberForm.fxml"));
             Scene scene = new Scene(loader.load(), 500, 600);
+            scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
+
             MemberFormController ctl = loader.getController();
             ctl.setMember(member);
             ctl.setParentController(this);
@@ -170,7 +170,6 @@ public class MemberController implements Initializable {
     private void setLoading(boolean loading) {
         Platform.runLater(() -> {
             progressIndicator.setVisible(loading);
-            addButton.setDisable(loading);
             editButton.setDisable(loading);
             deleteButton.setDisable(loading);
             refreshButton.setDisable(loading);

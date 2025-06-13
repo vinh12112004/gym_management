@@ -239,6 +239,8 @@ public class EquipmentController implements Initializable {
             ctr.setParentController(this);
 
             Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
+
             Stage stage = new Stage();
             stage.setTitle(equipment == null ? "Add Equipment" : "Edit Equipment");
             stage.setScene(scene);

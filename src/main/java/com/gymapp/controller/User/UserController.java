@@ -142,6 +142,7 @@ public class UserController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/User/UserForm.fxml"));
             Scene scene = new Scene(loader.load());
+            scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
             UserFormController ctrl = loader.getController();
             ctrl.setUser(user);
             Stage stage = new Stage();

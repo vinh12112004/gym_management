@@ -1,11 +1,14 @@
-<?import javafx.scene.control.TableView?>
+<?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.TableColumn?>
-<TableView fx:id="membershipPackageTable" xmlns:fx="http://javafx.com/fxml"
-           fx:controller="com.gymapp.controller.MemberPackage.MemberPackagesController">
+<?import javafx.scene.control.TableView?>
+
+<TableView fx:id="membershipPackageTable" minWidth="800.0" stylesheets="@../../css/content.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymapp.controller.MemberPackage.MemberPackagesController">
     <columns>
-        <TableColumn fx:id="packageNameColumn" text="Tên gói"/>
-        <TableColumn fx:id="startDateColumn" text="Ngày bắt đầu"/>
-        <TableColumn fx:id="endDateColumn" text="Ngày kết thúc"/>
-        <TableColumn fx:id="priceColumn" text="Giá"/>
+        <TableColumn fx:id="packageNameColumn" prefWidth="117.0" text="Tên gói" />
+        <TableColumn fx:id="startDateColumn" prefWidth="111.0" text="Ngày bắt đầu" />
+        <TableColumn fx:id="endDateColumn" prefWidth="109.0" text="Ngày kết thúc" />
+        <TableColumn fx:id="priceColumn" prefWidth="119.0" text="Giá" />
+        <TableColumn fx:id="coachNameColumn" prefWidth="171.0" text="Huấn luyện viên" />
     </columns>
 </TableView>

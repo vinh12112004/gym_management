@@ -156,6 +156,7 @@ public class RoomController implements Initializable {
                     getClass().getResource("/fxml/Room/RoomForm.fxml")
             );
             Scene scene = new Scene(loader.load(), 450, 500);
+            scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
             RoomFormController ctrl = loader.getController();
             ctrl.setRoom(room);
             ctrl.setParentController(this);

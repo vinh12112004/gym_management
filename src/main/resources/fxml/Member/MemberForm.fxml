@@ -1,18 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox spacing="15.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymapp.controller.Member.MemberFormController">
+<VBox spacing="15.0" stylesheets="@../../css/form.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymapp.controller.Member.MemberFormController">
    <children>
-      <Label fx:id="titleLabel" text="Add Member">
+      <Label fx:id="titleLabel" text="Edit Member">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <GridPane hgap="10.0" vgap="15.0">
+      <GridPane hgap="20.0" vgap="20.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="300.0" />
@@ -32,7 +41,7 @@
             <Label text="Last Name:" GridPane.rowIndex="1" />
             <TextField fx:id="lastNameField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label text="Email:" GridPane.rowIndex="2" />
-            <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="2" editable="false" />
             <Label text="Phone:" GridPane.rowIndex="3" />
             <TextField fx:id="phoneField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Label text="Join Date:" GridPane.rowIndex="4" />

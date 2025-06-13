@@ -7,20 +7,21 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymapp.controller.MainController">
    <top>
-      <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-background-color: #3498db; -fx-padding: 12;">
+      <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-background-color: #393e46; -fx-padding: 12;">
          <children>
-            <Label text="Gym Management System" textFill="WHITE">
+            <Label text="Gym Management System" textFill="#FFFFFF">
                <font>
-                  <Font name="Arial Bold" size="20.0" />
+                  <Font name="Arial Bold" size="15.0" />
                </font>
             </Label>
             <Region HBox.hgrow="ALWAYS" />
-            <Label fx:id="userLabel" textFill="WHITE">
+            <Label fx:id="userLabel" textFill="#eeeeee">
                <font>
                   <Font size="15.0" />
                </font>
             </Label>
-            <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#handleLogout" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 14;" text="Logout">
+            <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#handleLogout"
+                     style="-fx-background-color: #00adb5; -fx-text-fill: #222831; -fx-font-size: 14;" text="Logout">
                <padding>
                   <Insets bottom="8.0" left="12.0" right="12.0" top="8.0" />
                </padding>
@@ -29,68 +30,21 @@
       </HBox>
    </top>
    <left>
-      <VBox prefWidth="220.0" style="-fx-background-color: #2c3e50;">
+      <VBox prefWidth="220.0" style="-fx-background-color: #222831;">
          <children>
-            <Button fx:id="dashboardBtn" mnemonicParsing="false" onAction="#showDashboard" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-alignment: center-left; -fx-padding: 16; -fx-font-size: 14;" text="Dashboard">
-               <font>
-                  <Font name="Arial" size="14.0" />
-               </font>
-            </Button>
-            <Button fx:id="equipmentBtn" mnemonicParsing="false" onAction="#showEquipment" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-alignment: center-left; -fx-padding: 16; -fx-font-size: 14;" text="Equipment">
-               <font>
-                  <Font name="Arial" size="14.0" />
-               </font>
-            </Button>
-            <Button fx:id="membersBtn" mnemonicParsing="false" onAction="#showMembers" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-alignment: center-left; -fx-padding: 16; -fx-font-size: 14;" text="Members">
-               <font>
-                  <Font name="Arial" size="14.0" />
-               </font>
-            </Button>
-            <Button fx:id="staffBtn" mnemonicParsing="false" onAction="#showStaff" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-alignment: center-left; -fx-padding: 16; -fx-font-size: 14;" text="Staff">
-               <font>
-                  <Font name="Arial" size="14.0" />
-               </font>
-            </Button>
-            <Button fx:id="packagesBtn" mnemonicParsing="false" onAction="#showPackages" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-alignment: center-left; -fx-padding: 16; -fx-font-size: 14;" text="Packages">
-               <font>
-                  <Font name="Arial" size="14.0" />
-               </font>
-            </Button>
-            <Button fx:id="roomsBtn" mnemonicParsing="false" onAction="#showRooms" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-alignment: center-left; -fx-padding: 16; -fx-font-size: 14;" text="Rooms">
-               <font>
-                  <Font name="Arial" size="14.0" />
-               </font>
-            </Button>
-            <Button fx:id="sessionsBtn" mnemonicParsing="false" onAction="#showSessions" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-alignment: center-left; -fx-padding: 16; -fx-font-size: 14;" text="Workout Sessions">
-               <font>
-                  <Font name="Arial" size="14.0" />
-               </font>
-            </Button>
-            <Button fx:id="feedbackBtn" mnemonicParsing="false" onAction="#showFeedback" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-alignment: center-left; -fx-padding: 16; -fx-font-size: 14;" text="Feedback">
-               <font>
-                  <Font name="Arial" size="14.0" />
-               </font>
-            </Button>
-            <Button fx:id="usersBtn" mnemonicParsing="false" onAction="#showUsers" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-alignment: center-left; -fx-padding: 16; -fx-font-size: 14;" text="Users">
-               <font>
-                  <Font name="Arial" size="14.0" />
-               </font>
-            </Button>
-            <Button fx:id="profileBtn" mnemonicParsing="false" onAction="#showProfile" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-alignment: center-left; -fx-padding: 16; -fx-font-size: 14;" text="Profile">
-               <font>
-                  <Font name="Arial" size="14.0" />
-               </font>
-            </Button>
-            <Button fx:id="membershipPakagesBtn" mnemonicParsing="false" onAction="#showMembershipPakages" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-alignment: center-left; -fx-padding: 16; -fx-font-size: 14;" text="Membership Package">
-               <font>
-                  <Font name="Arial" size="14.0" />
-               </font>
-            </Button>
-            <Button fx:id="memberPakagesBtn" mnemonicParsing="false" onAction="#showMemberPakages" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-alignment: center-left; -fx-padding: 16; -fx-font-size: 14;" text="Membership Package">
-               <font>
-                  <Font name="Arial" size="14.0" />
-               </font>
-            </Button>
+            <Button fx:id="dashboardBtn" styleClass="menu-button" mnemonicParsing="false" onAction="#showDashboard" prefWidth="220.0" text="Dashboard"/>
+            <Button fx:id="equipmentBtn" styleClass="menu-button" mnemonicParsing="false" onAction="#showEquipment" prefWidth="220.0" text="Equipment"/>
+            <Button fx:id="membersBtn" styleClass="menu-button" mnemonicParsing="false" onAction="#showMembers" prefWidth="220.0" text="Members"/>
+            <Button fx:id="staffBtn" styleClass="menu-button" mnemonicParsing="false" onAction="#showStaff" prefWidth="220.0" text="Staff"/>
+            <Button fx:id="packagesBtn" styleClass="menu-button" mnemonicParsing="false" onAction="#showPackages" prefWidth="220.0" text="Packages"/>
+            <Button fx:id="roomsBtn" styleClass="menu-button" mnemonicParsing="false" onAction="#showRooms" prefWidth="220.0" text="Rooms"/>
+            <Button fx:id="sessionsBtn" styleClass="menu-button" mnemonicParsing="false" onAction="#showSessions" prefWidth="220.0" text="Workout Sessions"/>
+            <Button fx:id="feedbackBtn" styleClass="menu-button" mnemonicParsing="false" onAction="#showFeedback" prefWidth="220.0" text="Feedback"/>
+            <Button fx:id="usersBtn" styleClass="menu-button" mnemonicParsing="false" onAction="#showUsers" prefWidth="220.0" text="Users"/>
+            <Button fx:id="profileBtn" styleClass="menu-button" mnemonicParsing="false" onAction="#showProfile" prefWidth="220.0" text="Profile"/>
+            <Button fx:id="membershipPakagesBtn" styleClass="menu-button" mnemonicParsing="false" onAction="#showMembershipPakages" prefWidth="220.0" text="Membership Package"/>
+            <Button fx:id="memberPakagesBtn" styleClass="menu-button" mnemonicParsing="false" onAction="#showMemberPakages" prefWidth="220.0" text="Member Package"/>
+            <Button fx:id="traineesBtn" styleClass="menu-button" mnemonicParsing="false" onAction="#showTrainees" prefWidth="220.0" text="Trainees"/>
          </children>
       </VBox>
    </left>

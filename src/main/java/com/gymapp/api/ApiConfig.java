@@ -11,7 +11,7 @@ public class ApiConfig {
     public static final String MEMBERS            = "/members";
     public static final String PACKAGES           = "/packages";
     public static final String ROOMS              = "/rooms";
-    public static final String WORKOUT_SESSIONS   = "/workout_sessions";
+    public static final String WORKOUT_SESSIONS   = "/workout-sessions";
     public static final String USERS              = "/users";
     public static final String STAFFS             = "/staffs";
     public static final String MEMBERSHIP_PACKAGES= "/membership_packages";
