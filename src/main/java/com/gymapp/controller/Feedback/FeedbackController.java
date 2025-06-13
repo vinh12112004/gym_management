@@ -5,6 +5,7 @@ import com.gymapp.api.ApiClient;
 import com.gymapp.api.ApiConfig;
 import com.gymapp.model.Feedback;
 import com.gymapp.util.AlertHelper;
+import com.gymapp.util.SessionManager;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,82 +21,116 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.net.http.HttpResponse;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class FeedbackController implements Initializable {
-    
+
     @FXML private TableView<Feedback> feedbackTable;
     @FXML private TableColumn<Feedback, Long> idColumn;
     @FXML private TableColumn<Feedback, String> memberColumn;
     @FXML private TableColumn<Feedback, String> subjectColumn;
     @FXML private TableColumn<Feedback, Integer> ratingColumn;
     @FXML private TableColumn<Feedback, String> statusColumn;
-    @FXML private TableColumn<Feedback, String> dateColumn;
+
+    // 1. Đổi kiểu cột ngày
+    @FXML private TableColumn<Feedback, LocalDateTime> dateColumn;
+
+    @FXML private Button addButton;
+    @FXML private Button editButton;
     @FXML private Button viewButton;
     @FXML private Button updateStatusButton;
     @FXML private Button refreshButton;
     @FXML private ProgressIndicator progressIndicator;
-    
+
     private ObservableList<Feedback> feedbackList = FXCollections.observableArrayList();
-    
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setupTable();
+        setupRoleBasedAccess(); // Thêm dòng này
         refreshData();
     }
-    
+
+    private void setupRoleBasedAccess() {
+        String currentRole = SessionManager.getInstance().getCurrentRole();
+
+        // Chỉ ẩn nút Add cho MANAGER và OWNER, vẫn cho phép xem và update status
+        if ("MANAGER".equalsIgnoreCase(currentRole) || "OWNER".equalsIgnoreCase(currentRole)) {
+            addButton.setVisible(false);
+            addButton.setManaged(false);
+            editButton.setVisible(false);
+            editButton.setManaged(false);
+            // Vẫn giữ viewButton và updateStatusButton để họ có thể quản lý feedback
+        }
+        if("MEMBER".equalsIgnoreCase(currentRole)){
+            updateStatusButton.setVisible(false);
+            updateStatusButton.setManaged(false);
+        }
+    }
+
     private void setupTable() {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         memberColumn.setCellValueFactory(new PropertyValueFactory<>("memberName"));
         subjectColumn.setCellValueFactory(new PropertyValueFactory<>("subject"));
         ratingColumn.setCellValueFactory(new PropertyValueFactory<>("rating"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
-        
-        // Format date column
+
+        // 3. CellFactory nhận LocalDateTime
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
-        dateColumn.setCellFactory(column -> new TableCell<Feedback, String>() {
+        dateColumn.setCellFactory(column -> new TableCell<Feedback, LocalDateTime>() {
             @Override
-            protected void updateItem(String item, boolean empty) {
+            protected void updateItem(LocalDateTime item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty || item == null) {
                     setText(null);
                 } else {
-                    Feedback feedback = getTableView().getItems().get(getIndex());
-                    if (feedback.getCreatedAt() != null) {
-                        setText(feedback.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-                    }
+                    setText(item.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
                 }
             }
         });
-        
+
         feedbackTable.setItems(feedbackList);
-        
-        // Enable/disable buttons based on selection
-        feedbackTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            boolean hasSelection = newSelection != null;
-            viewButton.setDisable(!hasSelection);
-            updateStatusButton.setDisable(!hasSelection);
+        feedbackTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
+            boolean has = newSel != null;
+            editButton.setDisable(!has);
+            viewButton.setDisable(!has);
+            updateStatusButton.setDisable(!has);
         });
     }
-    
+
     @FXML
     public void refreshData() {
         setLoading(true);
-        
+
         Task<Void> refreshTask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
                 HttpResponse<String> response = ApiClient.getInstance().get(ApiConfig.FEEDBACK);
-                
+
                 if (response.statusCode() == 200) {
-                    List<Feedback> feedback = ApiClient.getInstance().getObjectMapper()
+                    List<Feedback> allFeedback = ApiClient.getInstance().getObjectMapper()
                             .readValue(response.body(), new TypeReference<List<Feedback>>() {});
-                    
+
+                    String currentRole = SessionManager.getInstance().getCurrentRole();
+                    List<Feedback> filteredFeedback;
+
+                    // Nếu là MEMBER, chỉ hiển thị feedback của member hiện tại
+                    if ("MEMBER".equalsIgnoreCase(currentRole)) {
+                        String currentUsername = SessionManager.getInstance().getCurrentUser();
+                        filteredFeedback = allFeedback.stream()
+                                .filter(f -> currentUsername.equals(f.getMemberName()))
+                                .collect(java.util.stream.Collectors.toList());
+                    } else {
+                        // MANAGER, OWNER, TRAINER thấy tất cả feedback
+                        filteredFeedback = allFeedback;
+                    }
+
                     Platform.runLater(() -> {
                         feedbackList.clear();
-                        feedbackList.addAll(feedback);
+                        feedbackList.addAll(filteredFeedback);
                     });
                 } else {
                     Platform.runLater(() -> {
@@ -104,12 +139,12 @@ public class FeedbackController implements Initializable {
                 }
                 return null;
             }
-            
+
             @Override
             protected void succeeded() {
                 setLoading(false);
             }
-            
+
             @Override
             protected void failed() {
                 Platform.runLater(() -> {
@@ -118,10 +153,10 @@ public class FeedbackController implements Initializable {
                 });
             }
         };
-        
+
         new Thread(refreshTask).start();
     }
-    
+
     @FXML
     private void handleView() {
         Feedback selected = feedbackTable.getSelectionModel().getSelectedItem();
@@ -129,7 +164,7 @@ public class FeedbackController implements Initializable {
             showFeedbackDetails(selected);
         }
     }
-    
+
     @FXML
     private void handleUpdateStatus() {
         Feedback selected = feedbackTable.getSelectionModel().getSelectedItem();
@@ -137,7 +172,7 @@ public class FeedbackController implements Initializable {
             updateFeedbackStatus(selected);
         }
     }
-    
+
     private void showFeedbackDetails(Feedback feedback) {
         StringBuilder details = new StringBuilder();
         details.append("ID: ").append(feedback.getId()).append("\n");
@@ -147,7 +182,7 @@ public class FeedbackController implements Initializable {
         details.append("Status: ").append(feedback.getStatus()).append("\n");
         details.append("Date: ").append(feedback.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))).append("\n\n");
         details.append("Message:\n").append(feedback.getMessage());
-        
+
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Feedback Details");
         alert.setHeaderText("Feedback #" + feedback.getId());
@@ -155,30 +190,30 @@ public class FeedbackController implements Initializable {
         alert.getDialogPane().setPrefWidth(500);
         alert.showAndWait();
     }
-    
+
     private void updateFeedbackStatus(Feedback feedback) {
         ChoiceDialog<String> dialog = new ChoiceDialog<>(feedback.getStatus(), "Pending", "Reviewed", "Resolved");
         dialog.setTitle("Update Status");
         dialog.setHeaderText("Update feedback status");
         dialog.setContentText("Choose new status:");
-        
+
         dialog.showAndWait().ifPresent(newStatus -> {
             if (!newStatus.equals(feedback.getStatus())) {
                 updateStatus(feedback, newStatus);
             }
         });
     }
-    
+
     private void updateStatus(Feedback feedback, String newStatus) {
         setLoading(true);
-        
+
         Task<Void> updateTask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
                 feedback.setStatus(newStatus);
                 HttpResponse<String> response = ApiClient.getInstance().put(
-                    ApiConfig.FEEDBACK + "/" + feedback.getId(), feedback);
-                
+                        ApiConfig.FEEDBACK + "/" + feedback.getId(), feedback);
+
                 if (response.statusCode() == 200) {
                     Platform.runLater(() -> {
                         AlertHelper.showInfo("Success", "Feedback status updated successfully.");
@@ -191,12 +226,12 @@ public class FeedbackController implements Initializable {
                 }
                 return null;
             }
-            
+
             @Override
             protected void succeeded() {
                 setLoading(false);
             }
-            
+
             @Override
             protected void failed() {
                 Platform.runLater(() -> {
@@ -205,21 +240,23 @@ public class FeedbackController implements Initializable {
                 });
             }
         };
-        
+
         new Thread(updateTask).start();
     }
-    
+
     private void setLoading(boolean loading) {
         Platform.runLater(() -> {
             progressIndicator.setVisible(loading);
+            addButton.setDisable(loading);
+            editButton.setDisable(loading);
             viewButton.setDisable(loading);
             updateStatusButton.setDisable(loading);
             refreshButton.setDisable(loading);
         });
     }
 
-    @FXML private void handleAdd()    { openFeedbackForm(null); }
-    @FXML private void handleEdit()   {
+    @FXML private void handleAdd() { openFeedbackForm(null); }
+    @FXML private void handleEdit() {
         Feedback sel = feedbackTable.getSelectionModel().getSelectedItem();
         if (sel != null) openFeedbackForm(sel);
     }
@@ -280,5 +317,9 @@ public class FeedbackController implements Initializable {
         } catch (Exception e) {
             AlertHelper.showError("Error", "Could not load feedback form.");
         }
+    }
+
+    public void onFeedbackSaved() {
+        refreshData();
     }
 }

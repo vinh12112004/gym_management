@@ -94,8 +94,6 @@ public class MainController implements Initializable {
             profileBtn.setManaged(false);
             memberPakagesBtn.setVisible(false);
             memberPakagesBtn.setManaged(false);
-            feedbackBtn.setVisible(false);
-            feedbackBtn.setManaged(false);
             traineesBtn.setVisible(false);
             traineesBtn.setManaged(false);
         }
@@ -104,8 +102,6 @@ public class MainController implements Initializable {
             profileBtn.setManaged(false);
             memberPakagesBtn.setVisible(false);
             memberPakagesBtn.setManaged(false);
-            feedbackBtn.setVisible(false);
-            feedbackBtn.setManaged(false);
             traineesBtn.setVisible(false);
             traineesBtn.setManaged(false);
             workoutHistoryBtn.setManaged(false);
