@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox spacing="20.0"
+      xmlns="http://javafx.com/javafx/11.0.1"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.gymapp.controller.Room.RoomController">
+    <padding>
+        <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+    </padding>
+    <children>
+        <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <children>
+                <Label text="Room Management">
+                    <font>
+                        <Font name="System Bold" size="24.0"/>
+                    </font>
+                </Label>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button fx:id="addButton"
+                        text="Add Room"
+                        onAction="#handleAdd"/>
+                <Button fx:id="refreshButton"
+                        text="Refresh"
+                        onAction="#refreshData"/>
+            </children>
+        </HBox>
+
+        <TableView fx:id="roomTable" prefHeight="400.0">
+            <columns>
+                <TableColumn fx:id="idColumn"
+                             text="ID"
+                             prefWidth="75.0">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="id"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="nameColumn"
+                             text="Room Name"
+                             prefWidth="200.0">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="name"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="roomTypeColumn"
+                             text="Room Type"
+                             prefWidth="150.0">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="roomType"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="addressColumn"
+                             text="Address"
+                             prefWidth="200.0">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="address"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="openTimeColumn"
+                             text="Open Time"
+                             prefWidth="100.0">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="openTime"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="closeTimeColumn"
+                             text="Close Time"
+                             prefWidth="100.0">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="closeTime"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="roomStatusColumn"
+                             text="Room Status"
+                             prefWidth="100.0">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="roomStatus"/>
+                    </cellValueFactory>
+                </TableColumn>
+
+                <!-- MỚI: Cột đếm thiết bị -->
+                <TableColumn fx:id="equipmentCountColumn"
+                             text="# Equipments"
+                             prefWidth="100.0">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="equipmentCount"/>
+                    </cellValueFactory>
+                </TableColumn>
+            </columns>
+        </TableView>
+
+        <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <children>
+                <Button fx:id="editButton"
+                        text="Edit"
+                        disable="true"
+                        onAction="#handleEdit"/>
+                <Button fx:id="deleteButton"
+                        text="Delete"
+                        disable="true"
+                        onAction="#handleDelete"/>
+            </children>
+        </HBox>
+
+        <ProgressIndicator fx:id="progressIndicator"
+                           visible="false"/>
+    </children>
+</VBox>

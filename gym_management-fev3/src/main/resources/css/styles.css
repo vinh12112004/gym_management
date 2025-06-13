@@ -1,0 +1,65 @@
+.root {
+  -fx-font-family: "Segoe UI", Arial, sans-serif;
+  -fx-font-size: 15px;
+  -fx-background-color: #f7f9fa;
+}
+
+.label {
+  -fx-font-size: 15px;
+  -fx-text-fill: #222;
+}
+
+.button {
+  -fx-background-color: linear-gradient(to right, #4f8cff, #38c6ff);
+  -fx-text-fill: white;
+  -fx-background-radius: 8px;
+  -fx-padding: 10px 20px;
+  -fx-font-weight: bold;
+  -fx-effect: dropshadow(gaussian, #b2d1ff, 4, 0.2, 0, 2);
+  -fx-cursor: hand;
+  -fx-border-width: 0;
+  -fx-font-size: 15px;
+  -fx-transition: all 0.2s;
+}
+
+.button:hover {
+  -fx-background-color: linear-gradient(to right, #38c6ff, #4f8cff);
+  -fx-effect: dropshadow(gaussian, #38c6ff, 8, 0.3, 0, 4);
+}
+
+.text-field, .password-field, .text-area, .combo-box {
+  -fx-background-color: #fff;
+  -fx-border-color: #d0d7de;
+  -fx-border-width: 1.5px;
+  -fx-border-radius: 6px;
+  -fx-padding: 8px 12px;
+  -fx-font-size: 15px;
+  -fx-effect: dropshadow(gaussian, #e6e6e6, 2, 0.1, 0, 1);
+}
+
+.text-field:focused, .password-field:focused, .text-area:focused, .combo-box:focused {
+  -fx-border-color: #4f8cff;
+  -fx-border-width: 2px;
+}
+
+.table-view {
+  -fx-background-color: #fff;
+  -fx-border-color: #e0e6ed;
+  -fx-border-radius: 8px;
+  -fx-effect: dropshadow(gaussian, #e0e6ed, 6, 0.1, 0, 2);
+}
+
+.table-view .column-header {
+  -fx-background-color: #4f8cff;
+  -fx-text-fill: white;
+  -fx-font-weight: bold;
+  -fx-font-size: 15px;
+}
+
+.table-row-cell:selected {
+  -fx-background-color: #e6f0ff;
+}
+
+.progress-indicator {
+  -fx-progress-color: #4f8cff;
+}

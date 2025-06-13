@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="18.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymapp.controller.MembershipPackage.MembershipPackageFormController">
+    <children>
+        <Label text="Đăng ký/Gia hạn gói tập" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+        <GridPane hgap="12.0" vgap="15.0">
+            <children>
+                <Label text="Hội viên:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <ComboBox fx:id="memberComboBox" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                <Label text="Gói tập:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <ComboBox fx:id="packageComboBox" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                <Label text="Ngày bắt đầu:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <DatePicker fx:id="startDatePicker" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                <Label text="Ngày kết thúc:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                <Label fx:id="endDateLabel" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                <Label text="Giá:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                <Label fx:id="priceLabel" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+            </children>
+        </GridPane>
+        <HBox alignment="CENTER" spacing="15.0">
+            <Button fx:id="saveButton" text="Xác nhận" onAction="#handleSave"/>
+            <Button fx:id="cancelButton" text="Hủy" onAction="#handleCancel"/>
+        </HBox>
+    </children>
+    <padding>
+        <Insets top="20" right="30" bottom="20" left="30"/>
+    </padding>
+</VBox>
