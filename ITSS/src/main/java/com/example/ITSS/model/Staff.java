@@ -1,9 +1,13 @@
 package com.example.ITSS.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "staff")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Staff {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,6 +36,9 @@ public class Staff {
         this.position = position;
     }
 
+    @OneToMany(mappedBy = "coach")
+    private List<MembershipPackage> coachedPackages;
+    
     // Getters & Setters
     public Long getId() { return id; }
     public String getFirstName() { return firstName; }

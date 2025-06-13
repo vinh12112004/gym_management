@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface MembershipPackageRepository extends JpaRepository<MembershipPackage, Long> {
     List<MembershipPackage> findByMemberId(Long memberId);
+    List<MembershipPackage> findByCoachId(Long coachId);
 }

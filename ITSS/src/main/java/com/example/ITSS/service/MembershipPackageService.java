@@ -34,4 +34,8 @@ public class MembershipPackageService {
     public void delete(Long id) {
         repository.deleteById(id);
     }
+
+    public List<MembershipPackage> findByCoachId(Long coachId) {
+    return repository.findByCoachId(coachId);
+}
 }

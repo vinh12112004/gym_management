@@ -53,4 +53,10 @@ public class MembershipPackageController {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/coach/{coachId}")
+    public List<MembershipPackage> getByCoach(@PathVariable Long coachId) {
+        return service.findByCoachId(coachId);
+    }
+
 }

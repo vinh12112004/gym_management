@@ -1,11 +1,13 @@
 package com.example.ITSS.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "packages")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Package {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,6 +34,9 @@ public class Package {
     private LocalDateTime updatedAt;
 
     public Package() {}
+
+    @OneToMany(mappedBy = "aPackage")
+    private List<MembershipPackage> membershipPackages;
 
     // Getters and setters
     public Long getId() { return id; }

@@ -1,16 +1,18 @@
 package com.example.ITSS.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "members")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Thay name thành firstName và lastName để đồng bộ với frontend
     @Column(nullable = false)
     private String firstName;
 
@@ -41,6 +43,10 @@ public class Member {
         this.status = status;
     }
 
+    @OneToMany(mappedBy = "member")
+    private List<MembershipPackage> membershipPackages;
+
+    
     public Long getId() { return id; }
     public String getFirstName() { return firstName; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
