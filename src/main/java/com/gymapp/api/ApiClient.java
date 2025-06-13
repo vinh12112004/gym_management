@@ -110,4 +110,27 @@ public class ApiClient {
     public ObjectMapper getObjectMapper() {
         return objectMapper;
     }
+
+    public HttpResponse<String> postWithoutCheck(String endpoint, Object body) throws Exception {
+        String jsonBody = objectMapper.writeValueAsString(body);
+        System.out.println("[DEBUG] POST URL: " + ApiConfig.BASE_URL + endpoint);
+        System.out.println("[DEBUG] POST Body: " + jsonBody);
+
+        HttpRequest.Builder builder = HttpRequest.newBuilder()
+                .uri(URI.create(ApiConfig.BASE_URL + endpoint))
+                .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
+                .header("Content-Type", "application/json")
+                .header("Accept", "application/json")
+                .timeout(Duration.ofSeconds(30));
+
+        addAuthHeader(builder);
+        HttpRequest request = builder.build();
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        
+        System.out.println("[DEBUG] Response Status: " + response.statusCode());
+        System.out.println("[DEBUG] Response Body: " + response.body());
+        
+        // KHÔNG gọi checkStatus() ở đây
+        return response;
+    }
 }

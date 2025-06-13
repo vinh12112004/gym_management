@@ -38,13 +38,13 @@
             <Button fx:id="staffBtn" styleClass="menu-button" mnemonicParsing="false" onAction="#showStaff" prefWidth="220.0" text="Staff"/>
             <Button fx:id="packagesBtn" styleClass="menu-button" mnemonicParsing="false" onAction="#showPackages" prefWidth="220.0" text="Packages"/>
             <Button fx:id="roomsBtn" styleClass="menu-button" mnemonicParsing="false" onAction="#showRooms" prefWidth="220.0" text="Rooms"/>
-            <Button fx:id="sessionsBtn" styleClass="menu-button" mnemonicParsing="false" onAction="#showSessions" prefWidth="220.0" text="Workout Sessions"/>
             <Button fx:id="feedbackBtn" styleClass="menu-button" mnemonicParsing="false" onAction="#showFeedback" prefWidth="220.0" text="Feedback"/>
             <Button fx:id="usersBtn" styleClass="menu-button" mnemonicParsing="false" onAction="#showUsers" prefWidth="220.0" text="Users"/>
             <Button fx:id="profileBtn" styleClass="menu-button" mnemonicParsing="false" onAction="#showProfile" prefWidth="220.0" text="Profile"/>
             <Button fx:id="membershipPakagesBtn" styleClass="menu-button" mnemonicParsing="false" onAction="#showMembershipPakages" prefWidth="220.0" text="Membership Package"/>
             <Button fx:id="memberPakagesBtn" styleClass="menu-button" mnemonicParsing="false" onAction="#showMemberPakages" prefWidth="220.0" text="Member Package"/>
             <Button fx:id="traineesBtn" styleClass="menu-button" mnemonicParsing="false" onAction="#showTrainees" prefWidth="220.0" text="Trainees"/>
+            <Button fx:id="workoutHistoryBtn" styleClass="menu-button" mnemonicParsing="false" onAction="#showWorkoutHistory" prefWidth="220.0" text="Workout History"/>
          </children>
       </VBox>
    </left>

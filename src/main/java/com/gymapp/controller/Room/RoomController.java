@@ -79,17 +79,31 @@ public class RoomController implements Initializable {
         Task<Void> task = new Task<>() {
             @Override
             protected Void call() throws Exception {
-                HttpResponse<String> response = ApiClient.getInstance().get(ApiConfig.ROOMS);
+                try {
+                    // Thêm debug log
+                    System.out.println("Attempting to connect to: " + ApiConfig.ROOMS);
+                    
+                    HttpResponse<String> response = ApiClient.getInstance().get(ApiConfig.ROOMS);
+                    
+                    System.out.println("Response status: " + response.statusCode());
+                    System.out.println("Response body: " + response.body());
 
-                if (response.statusCode() == 200) {
-                    List<Room> list = ApiClient.getInstance()
-                            .getObjectMapper()
-                            .readValue(response.body(), new TypeReference<List<Room>>() {});
-                    Platform.runLater(() -> roomList.setAll(list));
-                } else {
-                    Platform.runLater(() ->
-                            AlertHelper.showError("Error", "Failed to load room data.")
-                    );
+                    if (response.statusCode() == 200) {
+                        List<Room> list = ApiClient.getInstance()
+                                .getObjectMapper()
+                                .readValue(response.body(), new TypeReference<List<Room>>() {});
+                        
+                        System.out.println("Loaded " + list.size() + " rooms");
+                        Platform.runLater(() -> roomList.setAll(list));
+                    } else {
+                        Platform.runLater(() ->
+                                AlertHelper.showError("Error", "Failed to load room data. Status: " + response.statusCode())
+                        );
+                    }
+                } catch (Exception e) {
+                    System.err.println("Connection error: " + e.getMessage());
+                    e.printStackTrace();
+                    throw e;
                 }
                 return null;
             }
@@ -98,7 +112,7 @@ public class RoomController implements Initializable {
             @Override protected void failed() {
                 Platform.runLater(() -> {
                     setLoading(false);
-                    AlertHelper.showError("Error", "Connection failed. Please try again.");
+                    AlertHelper.showError("Error", "Connection failed. Please check if the server is running.");
                 });
             }
         };

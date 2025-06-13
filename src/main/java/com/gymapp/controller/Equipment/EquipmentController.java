@@ -60,6 +60,7 @@ public class EquipmentController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        System.out.println("[DEBUG] Initializing EquipmentController...");
         setupTable();
         loadRooms();
         fetchData(ApiConfig.EQUIPMENTS);
@@ -73,9 +74,13 @@ public class EquipmentController implements Initializable {
         purchaseDateColumn.setCellValueFactory(new PropertyValueFactory<>("purchaseDate"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-        roomIdColumn.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getRoom().getId())
-        );
+        
+        // Safe access to room ID
+        roomIdColumn.setCellValueFactory(cellData -> {
+            Equipment equipment = cellData.getValue();
+            Long roomId = (equipment.getRoom() != null) ? equipment.getRoom().getId() : null;
+            return new SimpleObjectProperty<>(roomId);
+        });
 
         actionsColumn.setCellFactory(col -> new TableCell<>() {
             private final Button editBtn = new Button("Edit");
@@ -105,24 +110,39 @@ public class EquipmentController implements Initializable {
     }
 
     private void loadRooms() {
+        System.out.println("[DEBUG] Loading rooms...");
         setLoading(true);
-        Task<List<Room>> task = new Task<>() {
-            @Override protected List<Room> call() throws Exception {
+        
+        new Thread(() -> {
+            try {
                 HttpResponse<String> resp = ApiClient.getInstance().get(ApiConfig.ROOMS);
+                System.out.println("[DEBUG] Rooms response status: " + resp.statusCode());
+                
                 if (resp.statusCode() == 200) {
-                    return ApiClient.getInstance()
+                    List<Room> rooms = ApiClient.getInstance()
                             .getObjectMapper()
                             .readValue(resp.body(), new TypeReference<List<Room>>() {});
+                    
+                    Platform.runLater(() -> {
+                        roomFilterCombo.setItems(FXCollections.observableArrayList(rooms));
+                        setLoading(false);
+                        System.out.println("[DEBUG] Loaded " + rooms.size() + " rooms");
+                    });
+                } else {
+                    System.err.println("[ERROR] Failed to load rooms: " + resp.statusCode() + " - " + resp.body());
+                    Platform.runLater(() -> {
+                        setLoading(false);
+                        showAlert("Lỗi", "Không thể tải danh sách phòng: " + resp.body());
+                    });
                 }
-                return List.of();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Platform.runLater(() -> {
+                    setLoading(false);
+                    showAlert("Lỗi", "Có lỗi xảy ra khi tải danh sách phòng: " + e.getMessage());
+                });
             }
-        };
-        task.setOnSucceeded(e -> {
-            roomFilterCombo.setItems(FXCollections.observableArrayList(task.getValue()));
-            setLoading(false);
-        });
-        task.setOnFailed(e -> setLoading(false));
-        new Thread(task).start();
+        }).start();
     }
 
     @FXML private void handleRefresh() {
@@ -159,28 +179,42 @@ public class EquipmentController implements Initializable {
     }
 
     private void fetchData(String url) {
+        System.out.println("[DEBUG] Fetching equipment data from: " + url);
         setLoading(true);
-        Task<List<Equipment>> task = new Task<>() {
-            @Override protected List<Equipment> call() throws Exception {
+        
+        new Thread(() -> {
+            try {
                 HttpResponse<String> resp = ApiClient.getInstance().get(url);
+                System.out.println("[DEBUG] Equipment response status: " + resp.statusCode());
+                System.out.println("[DEBUG] Equipment response body length: " + 
+                    (resp.body() != null ? resp.body().length() : "null"));
+                
                 if (resp.statusCode() == 200) {
-                    return ApiClient.getInstance()
+                    List<Equipment> equipments = ApiClient.getInstance()
                             .getObjectMapper()
-                            .readValue(resp.body(),
-                                    new TypeReference<List<Equipment>>() {});
+                            .readValue(resp.body(), new TypeReference<List<Equipment>>() {});
+                    
+                    Platform.runLater(() -> {
+                        equipmentList.setAll(equipments);
+                        setLoading(false);
+                        System.out.println("[DEBUG] Loaded " + equipments.size() + " equipments");
+                    });
+                } else {
+                    System.err.println("[ERROR] Failed to load equipments: " + resp.statusCode() + " - " + resp.body());
+                    Platform.runLater(() -> {
+                        setLoading(false);
+                        showAlert("Lỗi", "Không thể tải danh sách thiết bị. Status: " + 
+                                 resp.statusCode() + "\n" + resp.body());
+                    });
                 }
-                throw new RuntimeException("HTTP " + resp.statusCode());
+            } catch (Exception e) {
+                e.printStackTrace();
+                Platform.runLater(() -> {
+                    setLoading(false);
+                    showAlert("Lỗi", "Có lỗi xảy ra khi tải dữ liệu thiết bị: " + e.getMessage());
+                });
             }
-        };
-        task.setOnSucceeded(e -> {
-            equipmentList.setAll(task.getValue());
-            setLoading(false);
-        });
-        task.setOnFailed(e -> {
-            setLoading(false);
-            showAlert("Error", "Cannot load data.");
-        });
-        new Thread(task).start();
+        }).start();
     }
 
     @FXML private void handleAdd() {
@@ -196,35 +230,42 @@ public class EquipmentController implements Initializable {
         Equipment sel = equipmentTable.getSelectionModel().getSelectedItem();
         if (sel == null) return;
         Alert c = new Alert(Alert.AlertType.CONFIRMATION,
-                "Delete this equipment?", ButtonType.OK, ButtonType.CANCEL);
+                "Xóa thiết bị này?", ButtonType.OK, ButtonType.CANCEL);
         c.setHeaderText(null);
         c.showAndWait().filter(bt -> bt == ButtonType.OK)
                 .ifPresent(bt -> deleteEquipment(sel));
     }
 
     private void deleteEquipment(Equipment eq) {
+        System.out.println("[DEBUG] Deleting equipment ID: " + eq.getId());
         setLoading(true);
-        Task<Void> task = new Task<>() {
-            @Override protected Void call() throws Exception {
+        
+        new Thread(() -> {
+            try {
                 HttpResponse<String> resp = ApiClient.getInstance()
                         .delete(ApiConfig.EQUIPMENTS + "/" + eq.getId());
+                System.out.println("[DEBUG] Delete response status: " + resp.statusCode());
+                
                 if (resp.statusCode() == 200 || resp.statusCode() == 204) {
                     Platform.runLater(() -> {
                         equipmentList.remove(eq);
-                        showAlert("Success", "Deleted successfully.", Alert.AlertType.INFORMATION);
+                        setLoading(false);
+                        showAlert("Thành công", "Đã xóa thiết bị thành công.", Alert.AlertType.INFORMATION);
                     });
                 } else {
-                    Platform.runLater(() -> showAlert("Error", "Failed to delete equipment."));
+                    Platform.runLater(() -> {
+                        setLoading(false);
+                        showAlert("Lỗi", "Không thể xóa thiết bị: " + resp.body());
+                    });
                 }
-                return null;
+            } catch (Exception e) {
+                e.printStackTrace();
+                Platform.runLater(() -> {
+                    setLoading(false);
+                    showAlert("Lỗi", "Có lỗi xảy ra khi xóa thiết bị: " + e.getMessage());
+                });
             }
-            @Override protected void succeeded() { setLoading(false); }
-            @Override protected void failed() {
-                setLoading(false);
-                showAlert("Error", "Connection failed. Please try again.");
-            }
-        };
-        new Thread(task).start();
+        }).start();
     }
 
     private void openEquipmentForm(Equipment equipment) {
@@ -232,9 +273,9 @@ public class EquipmentController implements Initializable {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/fxml/Equipment/EquipmentForm.fxml")
             );
-            Parent root = loader.load();  // <— load FXML first
+            Parent root = loader.load();
 
-            EquipmentFormController ctr = loader.getController();  // typed controller
+            EquipmentFormController ctr = loader.getController();
             ctr.setEquipment(equipment);
             ctr.setParentController(this);
 
@@ -242,7 +283,7 @@ public class EquipmentController implements Initializable {
             scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
 
             Stage stage = new Stage();
-            stage.setTitle(equipment == null ? "Add Equipment" : "Edit Equipment");
+            stage.setTitle(equipment == null ? "Thêm thiết bị" : "Sửa thiết bị");
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setResizable(false);
@@ -250,7 +291,7 @@ public class EquipmentController implements Initializable {
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            showAlert("Error", "Could not load equipment form.");
+            showAlert("Lỗi", "Không thể mở form thiết bị: " + ex.getMessage());
         }
     }
 
@@ -274,6 +315,7 @@ public class EquipmentController implements Initializable {
     private void showAlert(String title, String msg) {
         showAlert(title, msg, Alert.AlertType.ERROR);
     }
+    
     private void showAlert(String title, String msg, Alert.AlertType type) {
         Alert a = new Alert(type);
         a.setTitle(title);

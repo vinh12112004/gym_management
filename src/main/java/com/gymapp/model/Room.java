@@ -1,14 +1,21 @@
 package com.gymapp.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 public class Room {
     private Long id;
     private String name;
-    private String roomType;    // Gym, Yoga, Fitness
+    private String roomType;    // Will receive enum as string from backend
     private String address;
-    private String openTime;    // “HH:mm” format
-    private String closeTime;   // “HH:mm” format
-    private String roomStatus;
-    private int equipmentCount;
+    
+    @JsonDeserialize(using = TimeArrayDeserializer.class)
+    private String openTime;    // Convert from LocalTime array to "HH:mm" format
+    
+    @JsonDeserialize(using = TimeArrayDeserializer.class)
+    private String closeTime;   // Convert from LocalTime array to "HH:mm" format
+    
+    private String roomStatus;  // Will receive enum as string from backend
+    private int equipmentCount; // Formula field from backend
 
     public Room() {}
 
@@ -52,5 +59,19 @@ public class Room {
     @Override
     public String toString() {
         return name; // Để ComboBox hiển thị tên phòng
+    }
+    
+    // Enum constants for validation/display purposes
+    public static class RoomType {
+        public static final String GYM = "Gym";
+        public static final String YOGA = "Yoga"; 
+        public static final String FITNESS = "Fitness";
+    }
+    
+    public static class RoomStatus {
+        public static final String AVAILABLE = "Available";
+        public static final String OCCUPIED = "Occupied";
+        public static final String MAINTENANCE = "Maintenance";
+        public static final String CLOSED = "Closed";
     }
 }

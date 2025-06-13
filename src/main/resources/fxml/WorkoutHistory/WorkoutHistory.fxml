@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="10.0" stylesheets="@../../css/content.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymapp.controller.WorkoutHistory.WorkoutHistoryController">
+    <Label style="-fx-font-size: 18px;" text="Lịch sử tập luyện" />
+    <HBox fx:id="memberSelectionBox" spacing="10">
+        <Label text="Chọn hội viên:" />
+        <ComboBox fx:id="memberComboBox" prefHeight="40.0" prefWidth="337.0" promptText="Chọn hội viên" />
+    </HBox>
+    <TableView fx:id="historyTable">
+        <columns>
+            <TableColumn fx:id="dateColumn" text="Thời gian" />
+            <TableColumn fx:id="noteColumn" text="Ghi chú" />
+        </columns>
+    </TableView>
+    <HBox spacing="10">
+        <DatePicker fx:id="datePicker" />
+        <TextField fx:id="noteField" promptText="Ghi chú" />
+        <Button onAction="#handleAdd" text="Ghi nhận" />
+    </HBox>
+</VBox>

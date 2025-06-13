@@ -25,7 +25,6 @@ public class MainController implements Initializable {
     @FXML private Button membersBtn;
     @FXML private Button packagesBtn;
     @FXML private Button roomsBtn;
-    @FXML private Button sessionsBtn;
     @FXML private Button feedbackBtn;
     @FXML private Button usersBtn;
     @FXML private Button staffBtn;
@@ -33,6 +32,7 @@ public class MainController implements Initializable {
     @FXML private Button membershipPakagesBtn;
     @FXML private Button memberPakagesBtn;
     @FXML private Button traineesBtn;
+    @FXML private Button workoutHistoryBtn;
 
 
     @Override
@@ -53,16 +53,16 @@ public class MainController implements Initializable {
             packagesBtn.setManaged(false);
             memberPakagesBtn.setVisible(false);
             memberPakagesBtn.setManaged(false);
-            sessionsBtn.setVisible(false);
-            sessionsBtn.setManaged(false);
             feedbackBtn.setVisible(false);
             roomsBtn.setVisible(false);
             roomsBtn.setManaged(false);
             membershipPakagesBtn.setVisible(false);
             membershipPakagesBtn.setManaged(false);
-            feedbackBtn.setManaged(false); // Ẩn hoàn toàn khỏi layout
+            feedbackBtn.setManaged(false);
             usersBtn.setVisible(false);
-            usersBtn.setManaged(false); // Ẩn hoàn toàn khỏi layout
+            usersBtn.setManaged(false);
+            workoutHistoryBtn.setManaged(false);
+            workoutHistoryBtn.setVisible(false);
         }
         if("MEMBER".equalsIgnoreCase(role)) {
             dashboardBtn.setVisible(false);
@@ -90,8 +90,6 @@ public class MainController implements Initializable {
             roomsBtn.setManaged(false);
             equipmentBtn.setVisible(false);
             equipmentBtn.setManaged(false);
-            sessionsBtn.setVisible(false);
-            sessionsBtn.setManaged(false);
             profileBtn.setVisible(false);
             profileBtn.setManaged(false);
             memberPakagesBtn.setVisible(false);
@@ -102,8 +100,6 @@ public class MainController implements Initializable {
             traineesBtn.setManaged(false);
         }
         if("OWNER".equalsIgnoreCase(role)) {
-            sessionsBtn.setVisible(false);
-            sessionsBtn.setManaged(false);
             profileBtn.setVisible(false);
             profileBtn.setManaged(false);
             memberPakagesBtn.setVisible(false);
@@ -112,6 +108,10 @@ public class MainController implements Initializable {
             feedbackBtn.setManaged(false);
             traineesBtn.setVisible(false);
             traineesBtn.setManaged(false);
+            workoutHistoryBtn.setManaged(false);
+            workoutHistoryBtn.setVisible(false);
+            membershipPakagesBtn.setVisible(false);
+            membershipPakagesBtn.setManaged(false);
         }
         System.out.println("Role: " + role);
         System.out.println("ProfileBtn visible: " + profileBtn.isVisible());
@@ -164,12 +164,6 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    private void showSessions() {
-        loadContent("/fxml/WorkoutSession/WorkoutSessions.fxml");
-        setActiveButton(sessionsBtn);
-    }
-
-    @FXML
     private void showFeedback() {
         loadContent("/fxml/Feedback/Feedback.fxml");
         setActiveButton(feedbackBtn);
@@ -210,6 +204,12 @@ public class MainController implements Initializable {
         setActiveButton(traineesBtn);
     }
 
+    @FXML
+    private void showWorkoutHistory() {
+        loadContent("/fxml/WorkoutHistory/WorkoutHistory.fxml");
+        setActiveButton(workoutHistoryBtn);
+    }
+
     private void loadContent(String fxmlPath) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
@@ -227,7 +227,7 @@ public class MainController implements Initializable {
     private void setActiveButton(Button activeButton) {
         Button[] buttons = {
             dashboardBtn, equipmentBtn, membersBtn, packagesBtn, roomsBtn,
-            sessionsBtn, feedbackBtn, usersBtn, staffBtn, profileBtn,
+             feedbackBtn, usersBtn, staffBtn, profileBtn,
             membershipPakagesBtn, memberPakagesBtn, traineesBtn
         };
         for (Button btn : buttons) {
