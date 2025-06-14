@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" stylesheets="@../../css/content.css" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymapp.controller.Member.MemberController">
+   <children>
+      <HBox alignment="CENTER_LEFT" spacing="10.0">
+         <children>
+            <Label text="Member Management">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Region HBox.hgrow="ALWAYS" />
+            <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#refreshData" text="Refresh" />
+         </children>
+      </HBox>
+      <TableView fx:id="memberTable" prefHeight="400.0">
+        <columns>
+          <TableColumn fx:id="idColumn" prefWidth="75.0" text="ID">
+               <cellValueFactory>
+                  <PropertyValueFactory property="id" />
+               </cellValueFactory>
+            </TableColumn>
+          <TableColumn fx:id="nameColumn" prefWidth="200.0" text="Full Name">
+               <cellValueFactory>
+                  <PropertyValueFactory property="fullName" />
+               </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="emailColumn" prefWidth="200.0" text="Email">
+               <cellValueFactory>
+                  <PropertyValueFactory property="email" />
+               </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="phoneColumn" prefWidth="150.0" text="Phone">
+               <cellValueFactory>
+                  <PropertyValueFactory property="phone" />
+               </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="membershipColumn" prefWidth="150.0" text="Membership">
+               <cellValueFactory>
+                  <PropertyValueFactory property="membershipType" />
+               </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="statusColumn" prefWidth="100.0" text="Status">
+               <cellValueFactory>
+                  <PropertyValueFactory property="status" />
+               </cellValueFactory>
+            </TableColumn>
+        </columns>
+      </TableView>
+      <HBox alignment="CENTER_LEFT" spacing="10.0">
+         <children>
+            <Button fx:id="editButton" disable="true" mnemonicParsing="false" onAction="#handleEdit" text="Edit" />
+            <Button fx:id="deleteButton" disable="true" mnemonicParsing="false" onAction="#handleDelete" text="Delete" />
+         </children>
+      </HBox>
+      <ProgressIndicator fx:id="progressIndicator" visible="false" />
+   </children>
+</VBox>

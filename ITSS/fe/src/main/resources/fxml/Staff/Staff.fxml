@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox spacing="20.0" stylesheets="@../../css/content.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymapp.controller.Staff.StaffController">
+   <children>
+      <HBox alignment="CENTER_LEFT" spacing="10.0">
+         <children>
+            <Label text="Staff Management">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Region HBox.hgrow="ALWAYS" />
+            <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#refreshData" text="Refresh" />
+         </children>
+      </HBox>
+      <TableView fx:id="staffTable" prefHeight="400.0">
+        <columns>
+          <TableColumn fx:id="idColumn" prefWidth="75.0" text="ID">
+               <cellValueFactory>
+                  <PropertyValueFactory property="id" />
+               </cellValueFactory>
+            </TableColumn>
+          <TableColumn fx:id="firstNameColumn" prefWidth="120.0" text="First Name">
+               <cellValueFactory>
+                  <PropertyValueFactory property="firstName" />
+               </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="lastNameColumn" prefWidth="120.0" text="Last Name">
+               <cellValueFactory>
+                  <PropertyValueFactory property="lastName" />
+               </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="emailColumn" prefWidth="200.0" text="Email">
+               <cellValueFactory>
+                  <PropertyValueFactory property="email" />
+               </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="phoneColumn" prefWidth="150.0" text="Phone">
+               <cellValueFactory>
+                  <PropertyValueFactory property="phone" />
+               </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="positionColumn" prefWidth="120.0" text="Position">
+               <cellValueFactory>
+                  <PropertyValueFactory property="position" />
+               </cellValueFactory>
+            </TableColumn>
+        </columns>
+      </TableView>
+      <HBox alignment="CENTER_LEFT" spacing="10.0">
+         <children>
+            <Button fx:id="editButton" disable="true" mnemonicParsing="false" onAction="#handleEdit" text="Edit" />
+            <Button fx:id="deleteButton" disable="true" mnemonicParsing="false" onAction="#handleDelete" text="Delete" />
+         </children>
+      </HBox>
+      <ProgressIndicator fx:id="progressIndicator" visible="false" />
+   </children>
+</VBox>

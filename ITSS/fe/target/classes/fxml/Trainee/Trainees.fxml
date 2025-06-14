@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox minWidth="800.0" stylesheets="@../../css/content.css" spacing="10.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymapp.controller.Trainee.TraineesController">
+    <Label style="-fx-font-size: 18px;" text="Danh sách học viên của bạn" />
+    <TableView fx:id="traineeTable">
+        <columns>
+            <TableColumn fx:id="nameColumn" prefWidth="153.0" text="Tên học viên" />
+            <TableColumn fx:id="emailColumn" prefWidth="141.0" text="Email" />
+            <TableColumn fx:id="phoneColumn" prefWidth="112.0" text="Số điện thoại" />
+            <TableColumn fx:id="packageColumn" prefWidth="101.0" text="Gói tập" />
+            <TableColumn fx:id="startDateColumn" prefWidth="129.0" text="Ngày bắt đầu" />
+            <TableColumn fx:id="endDateColumn" prefWidth="141.0" text="Ngày kết thúc" />
+        </columns>
+    </TableView>
+</VBox>

@@ -1,0 +1,420 @@
+/* Equipment Form CSS for JavaFX */
+
+/* Root styling */
+.root {
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+    -fx-font-size: 14px;
+}
+
+/* Main VBox container */
+.vbox {
+    -fx-background-color: linear-gradient(to bottom, #ffffff, #f8f9fa);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 3);
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #e9ecef;
+    -fx-border-width: 1;
+    -fx-padding: 20;
+}
+
+/* Title label styling */
+#titleLabel {
+    -fx-text-fill: #2c3e50;
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+    -fx-padding: 0 0 10 0;
+    -fx-border-color: #00adb5;
+    -fx-border-width: 0 0 2 0;
+    -fx-alignment: center-left;
+}
+
+/* GridPane styling */
+.grid-pane {
+    -fx-hgap: 10;
+    -fx-vgap: 15;
+    -fx-padding: 20 0 20 0;
+}
+
+/* Label styling */
+.label {
+    -fx-text-fill: #34495e;
+    -fx-font-weight: normal;
+    -fx-font-size: 14px;
+    -fx-alignment: center-right;
+    -fx-padding: 0 10 0 0;
+}
+
+/* TextField styling */
+.text-field {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 10 15;
+    -fx-font-size: 14px;
+    -fx-text-fill: #2c3e50;
+    -fx-prompt-text-fill: #7f8c8d;
+    -fx-effect: innershadow(three-pass-box, rgba(0,0,0,0.05), 2, 0, 0, 1);
+}
+
+.text-field:focused {
+    -fx-border-color: #00adb5;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,173,181,0.3), 5, 0, 0, 0);
+}
+
+.text-field:hover {
+    -fx-border-color: #33bdc4;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,173,181,0.1), 3, 0, 0, 0);
+}
+
+/* TextArea styling */
+.text-area {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 10 15;
+    -fx-font-size: 14px;
+    -fx-text-fill: #2c3e50;
+    -fx-prompt-text-fill: #7f8c8d;
+    -fx-effect: innershadow(three-pass-box, rgba(0,0,0,0.05), 2, 0, 0, 1);
+}
+
+.text-area:focused {
+    -fx-border-color: #00adb5;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,173,181,0.3), 5, 0, 0, 0);
+}
+
+.text-area:hover {
+    -fx-border-color: #33bdc4;
+}
+
+.text-area .content {
+    -fx-background-color: transparent;
+}
+
+.text-area .scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.text-area .scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+/* ComboBox styling */
+.combo-box {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 5;
+    -fx-font-size: 14px;
+    -fx-effect: innershadow(three-pass-box, rgba(0,0,0,0.05), 2, 0, 0, 1);
+}
+
+.combo-box:hover {
+    -fx-border-color: #33bdc4;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,173,181,0.1), 3, 0, 0, 0);
+}
+
+.combo-box:focused {
+    -fx-border-color: #00adb5;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,173,181,0.3), 5, 0, 0, 0);
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: #2c3e50;
+    -fx-padding: 8 12;
+    -fx-font-size: 14px;
+}
+
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.combo-box .arrow {
+    -fx-background-color: #7f8c8d;
+    -fx-shape: "M 0 0 L 4 4 L 8 0 Z";
+    -fx-scale-shape: false;
+}
+
+.combo-box:hover .arrow {
+    -fx-background-color: #00adb5;
+}
+
+/* ComboBox popup styling */
+.combo-box-popup .list-view {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 12, 0, 0, 6);
+}
+
+.combo-box-popup .list-view .list-cell {
+    -fx-padding: 10 15;
+    -fx-border-color: transparent;
+}
+
+.combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: #eaf6f7;
+}
+
+.combo-box-popup .list-view .list-cell:selected {
+    -fx-background-color: #d5f4f6;
+    -fx-text-fill: #2c3e50;
+}
+
+/* DatePicker styling */
+.date-picker {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-effect: innershadow(three-pass-box, rgba(0,0,0,0.05), 2, 0, 0, 1);
+}
+
+.date-picker:hover {
+    -fx-border-color: #33bdc4;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,173,181,0.1), 3, 0, 0, 0);
+}
+
+.date-picker:focused {
+    -fx-border-color: #00adb5;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,173,181,0.3), 5, 0, 0, 0);
+}
+
+.date-picker .text-field {
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-color: transparent;
+    -fx-padding: 8 12;
+    -fx-effect: none;
+}
+
+.date-picker .arrow-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0 10;
+}
+
+.date-picker .arrow {
+    -fx-background-color: #7f8c8d;
+    -fx-shape: "M 0 0 L 4 4 L 8 0 Z";
+    -fx-scale-shape: false;
+}
+
+.date-picker:hover .arrow {
+    -fx-background-color: #00adb5;
+}
+
+/* DatePicker popup */
+.date-picker-popup {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 12, 0, 0, 6);
+}
+
+/* Button styling */
+.button {
+    -fx-background-color: linear-gradient(to bottom, #00adb5, #007d85);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 12 24;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 4, 0, 0, 2);
+    -fx-min-width: 80;
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(to bottom, #33bdc4, #00adb5);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,173,181,0.4), 8, 0, 0, 3);
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+}
+
+.button:pressed {
+    -fx-background-color: #007d85;
+    -fx-scale-x: 0.97;
+    -fx-scale-y: 0.97;
+    -fx-effect: innershadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 1);
+}
+
+/* Save button specific styling */
+#saveButton {
+    -fx-background-color: linear-gradient(to bottom, #27ae60, #1e8449);
+}
+
+#saveButton:hover {
+    -fx-background-color: linear-gradient(to bottom, #2ecc71, #27ae60);
+    -fx-effect: dropshadow(three-pass-box, rgba(39,174,96,0.4), 8, 0, 0, 3);
+}
+
+#saveButton:pressed {
+    -fx-background-color: #1e8449;
+}
+
+/* Cancel button specific styling */
+#cancelButton {
+    -fx-background-color: linear-gradient(to bottom, #95a5a6, #7f8c8d);
+}
+
+#cancelButton:hover {
+    -fx-background-color: linear-gradient(to bottom, #aab7b8, #95a5a6);
+    -fx-effect: dropshadow(three-pass-box, rgba(149,165,166,0.4), 8, 0, 0, 3);
+}
+
+#cancelButton:pressed {
+    -fx-background-color: #7f8c8d;
+}
+
+/* Button container (HBox) styling */
+.hbox {
+    -fx-alignment: center;
+    -fx-spacing: 15;
+    -fx-padding: 20 0 0 0;
+}
+
+/* ProgressIndicator styling */
+.progress-indicator {
+    -fx-progress-color: #00adb5;
+    -fx-pref-width: 50;
+    -fx-pref-height: 50;
+    -fx-padding: 20 0 0 0;
+}
+
+.progress-indicator .percentage {
+    -fx-fill: transparent;
+}
+
+.progress-indicator .indicator {
+    -fx-progress-color: #00adb5;
+}
+
+/* Specific field styling based on IDs */
+#nameField {
+    -fx-prompt-text: "Enter equipment name...";
+}
+
+#typeField {
+    -fx-prompt-text: "e.g., Treadmill, Dumbbell...";
+}
+
+#priceField {
+    -fx-prompt-text: "Enter price in USD...";
+}
+
+#descriptionArea {
+    -fx-prompt-text: "Enter equipment description...";
+    -fx-wrap-text: true;
+}
+
+/* ComboBox specific styling */
+#roomComboBox {
+    -fx-prompt-text: "Select room...";
+}
+
+#statusComboBox {
+    -fx-prompt-text: "Select status...";
+}
+
+/* Focus indicators */
+.text-field:focused,
+.text-area:focused,
+.combo-box:focused,
+.date-picker:focused {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,173,181,0.4), 6, 0, 0, 0);
+}
+
+/* Validation styling (for future use) */
+.text-field.error,
+.text-area.error,
+.combo-box.error,
+.date-picker.error {
+    -fx-border-color: #e74c3c;
+    -fx-border-width: 2;
+}
+
+.text-field.error:focused,
+.text-area.error:focused,
+.combo-box.error:focused,
+.date-picker.error:focused {
+    -fx-effect: dropshadow(three-pass-box, rgba(231,76,60,0.4), 6, 0, 0, 0);
+}
+
+.text-field.success,
+.text-area.success,
+.combo-box.success,
+.date-picker.success {
+    -fx-border-color: #27ae60;
+    -fx-border-width: 2;
+}
+
+.text-field.success:focused,
+.text-area.success:focused,
+.combo-box.success:focused,
+.date-picker.success:focused {
+    -fx-effect: dropshadow(three-pass-box, rgba(39,174,96,0.4), 6, 0, 0, 0);
+}
+
+/* Responsive adjustments */
+.grid-pane .label {
+    -fx-min-width: 100;
+    -fx-pref-width: 100;
+}
+
+/* Scrollbar styling for TextArea */
+.text-area .scroll-bar:vertical {
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: transparent;
+    -fx-background-radius: 4;
+    -fx-pref-width: 8;
+}
+
+.text-area .scroll-bar:vertical .thumb {
+    -fx-background-color: #c0c0c0;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+}
+
+.text-area .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #a0a0a0;
+}
+
+.text-area .scroll-bar:vertical .thumb:pressed {
+    -fx-background-color: #00adb5;
+}
+
+/* Tooltip styling */
+.tooltip {
+    -fx-background-color: #2c3e50;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-padding: 8 12;
+    -fx-background-radius: 6;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 8, 0, 0, 4);
+}
+
+/* Animation for smooth transitions */
+.text-field,
+.text-area,
+.combo-box,
+.date-picker,
+.button {
+    -fx-transition: all 0.2s ease-in-out;
+}

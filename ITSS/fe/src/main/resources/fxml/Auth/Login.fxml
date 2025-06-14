@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" spacing="20.0" stylesheets="@../../css/form.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gymapp.controller.Auth.LoginController">
+   <children>
+      <Label text="Gym Management System">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label text="Login">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <VBox alignment="CENTER" spacing="10.0">
+         <children>
+            <TextField fx:id="usernameField" promptText="Username" />
+            <PasswordField fx:id="passwordField" promptText="Password" />
+            <Button fx:id="loginButton" mnemonicParsing="false" onAction="#handleLogin" text="Login" />
+            <Button fx:id="registerButton" mnemonicParsing="false" onAction="#handleRegister" text="Register" />
+         </children>
+      </VBox>
+      <ProgressIndicator fx:id="progressIndicator" visible="false" />
+   </children>
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+</VBox>
