@@ -56,19 +56,28 @@ public class FeedbackController implements Initializable {
 
     private void setupRoleBasedAccess() {
         String currentRole = SessionManager.getInstance().getCurrentRole();
-
+        
+        System.out.println("=== DEBUG setupRoleBasedAccess ===");
+        System.out.println("Current role: " + currentRole);
+        
         // Chỉ ẩn nút Add cho MANAGER và OWNER, vẫn cho phép xem và update status
         if ("MANAGER".equalsIgnoreCase(currentRole) || "OWNER".equalsIgnoreCase(currentRole)) {
             addButton.setVisible(false);
             addButton.setManaged(false);
             editButton.setVisible(false);
             editButton.setManaged(false);
-            // Vẫn giữ viewButton và updateStatusButton để họ có thể quản lý feedback
+            System.out.println("Hidden add/edit buttons for MANAGER/OWNER");
         }
+        
         if("MEMBER".equalsIgnoreCase(currentRole)){
             updateStatusButton.setVisible(false);
             updateStatusButton.setManaged(false);
+            System.out.println("Hidden updateStatus button for MEMBER");
         }
+        
+        System.out.println("Buttons visibility - Add: " + addButton.isVisible() + 
+                        ", Edit: " + editButton.isVisible() + 
+                        ", UpdateStatus: " + updateStatusButton.isVisible());
     }
 
     private void setupTable() {
@@ -104,49 +113,112 @@ public class FeedbackController implements Initializable {
     @FXML
     public void refreshData() {
         setLoading(true);
+        
+        System.out.println("=== DEBUG refreshData ===");
+        System.out.println("Starting refresh for role: " + SessionManager.getInstance().getCurrentRole());
 
         Task<Void> refreshTask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                HttpResponse<String> response = ApiClient.getInstance().get(ApiConfig.FEEDBACK);
+                try {
+                    HttpResponse<String> response = ApiClient.getInstance().get(ApiConfig.FEEDBACK);
+                    System.out.println("API response status: " + response.statusCode());
 
-                if (response.statusCode() == 200) {
-                    List<Feedback> allFeedback = ApiClient.getInstance().getObjectMapper()
-                            .readValue(response.body(), new TypeReference<List<Feedback>>() {});
+                    if (response.statusCode() == 200) {
+                        List<Feedback> allFeedback = ApiClient.getInstance().getObjectMapper()
+                                .readValue(response.body(), new TypeReference<List<Feedback>>() {});
 
-                    String currentRole = SessionManager.getInstance().getCurrentRole();
-                    List<Feedback> filteredFeedback;
-
-                    // Nếu là MEMBER, chỉ hiển thị feedback của member hiện tại
-                    if ("MEMBER".equalsIgnoreCase(currentRole)) {
+                        String currentRole = SessionManager.getInstance().getCurrentRole();
                         String currentUsername = SessionManager.getInstance().getCurrentUser();
-                        filteredFeedback = allFeedback.stream()
-                                .filter(f -> currentUsername.equals(f.getMemberName()))
-                                .collect(java.util.stream.Collectors.toList());
-                    } else {
-                        // MANAGER, OWNER, TRAINER thấy tất cả feedback
-                        filteredFeedback = allFeedback;
-                    }
+                        
+                        System.out.println("Current role: " + currentRole);
+                        System.out.println("Current username: " + currentUsername);
+                        System.out.println("Total feedback count: " + allFeedback.size());
 
-                    Platform.runLater(() -> {
-                        feedbackList.clear();
-                        feedbackList.addAll(filteredFeedback);
-                    });
-                } else {
-                    Platform.runLater(() -> {
-                        AlertHelper.showError("Error", "Failed to load feedback data.");
-                    });
+                        List<Feedback> filteredFeedback;
+
+                        try {
+                            // Nếu là MEMBER, chỉ hiển thị feedback của member hiện tại
+                            if ("MEMBER".equalsIgnoreCase(currentRole)) {
+                                System.out.println("Filtering for MEMBER role...");
+                                
+                                filteredFeedback = allFeedback.stream()
+                                        .filter(f -> {
+                                            try {
+                                                String memberName = f.getMemberName();
+                                                if (memberName == null || currentUsername == null) {
+                                                    System.out.println("Null values - memberName: " + memberName + ", currentUsername: " + currentUsername);
+                                                    return false;
+                                                }
+                                                
+                                                // Sử dụng startsWith để match "member" với "member 00"
+                                                boolean match = memberName.trim().toLowerCase()
+                                                                        .startsWith(currentUsername.trim().toLowerCase());
+                                                
+                                                System.out.println("Feedback ID: " + f.getId() + 
+                                                                ", MemberName: '" + memberName + "'" + 
+                                                                ", CurrentUser: '" + currentUsername + "'" +
+                                                                ", Match: " + match);
+                                                return match;
+                                            } catch (Exception e) {
+                                                System.err.println("Error in filter: " + e.getMessage());
+                                                e.printStackTrace();
+                                                return false;
+                                            }
+                                        })
+                                        .collect(java.util.stream.Collectors.toList());
+                                
+                                System.out.println("Filtered feedback count for MEMBER: " + filteredFeedback.size());
+                            } else {
+                                // MANAGER, OWNER, TRAINER thấy tất cả feedback
+                                filteredFeedback = allFeedback;
+                                System.out.println("Showing all feedback for role: " + currentRole);
+                            }
+                        } catch (Exception filterException) {
+                            System.err.println("Error in filtering logic: " + filterException.getMessage());
+                            filterException.printStackTrace();
+                            throw filterException;
+                        }
+
+                        Platform.runLater(() -> {
+                            try {
+                                feedbackList.clear();
+                                feedbackList.addAll(filteredFeedback);
+                                System.out.println("UI updated with " + filteredFeedback.size() + " feedback items");
+                            } catch (Exception uiException) {
+                                System.err.println("Error updating UI: " + uiException.getMessage());
+                                uiException.printStackTrace();
+                            }
+                        });
+                    } else {
+                        System.out.println("Non-200 response: " + response.statusCode());
+                        Platform.runLater(() -> {
+                            AlertHelper.showError("Error", "Failed to load feedback data. Status: " + response.statusCode());
+                        });
+                    }
+                } catch (Exception e) {
+                    System.err.println("Exception in refreshData call(): " + e.getMessage());
+                    e.printStackTrace();
+                    throw e;
                 }
                 return null;
             }
 
             @Override
             protected void succeeded() {
+                System.out.println("refreshData task succeeded");
                 setLoading(false);
             }
 
             @Override
             protected void failed() {
+                System.err.println("refreshData task failed");
+                Throwable exception = getException();
+                if (exception != null) {
+                    System.err.println("Exception details: " + exception.getMessage());
+                    exception.printStackTrace();
+                }
+                
                 Platform.runLater(() -> {
                     setLoading(false);
                     AlertHelper.showError("Error", "Connection failed. Please try again.");

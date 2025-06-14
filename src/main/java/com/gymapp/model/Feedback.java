@@ -1,7 +1,10 @@
 package com.gymapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.time.LocalDateTime;
 
+@JsonIgnoreProperties(ignoreUnknown = true) // Ignore field "member" từ backend
 public class Feedback {
     private Long id;
     private Long memberId;
@@ -10,7 +13,11 @@ public class Feedback {
     private String message;
     private Integer rating;
     private String status;
+    
+    @JsonDeserialize(using = DateTimeArrayDeserializer.class)
     private LocalDateTime createdAt;
+    
+    @JsonDeserialize(using = DateTimeArrayDeserializer.class)
     private LocalDateTime updatedAt;
     
     public Feedback() {}
@@ -42,4 +49,15 @@ public class Feedback {
     
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+
+    @Override
+    public String toString() {
+        return "Feedback{" +
+                "id=" + id +
+                ", memberName='" + memberName + '\'' +
+                ", subject='" + subject + '\'' +
+                ", rating=" + rating +
+                ", status='" + status + '\'' +
+                '}';
+    }
 }

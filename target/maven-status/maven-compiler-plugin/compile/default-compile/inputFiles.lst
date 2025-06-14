@@ -33,6 +33,7 @@ D:\TestUi\fe\src\main\java\com\gymapp\GymManagementApp.java
 D:\TestUi\fe\src\main\java\com\gymapp\controller\Room\RoomController.java
 D:\TestUi\fe\src\main\java\com\gymapp\util\AlertHelper.java
 D:\TestUi\fe\src\main\java\com\gymapp\controller\Auth\RegisterController.java
+D:\TestUi\fe\src\main\java\com\gymapp\model\DateTimeArrayDeserializer.java
 D:\TestUi\fe\src\main\java\com\gymapp\model\MembershipPackage.java
 D:\TestUi\fe\src\main\java\com\gymapp\model\Role.java
 D:\TestUi\fe\src\main\java\com\gymapp\model\Equipment.java

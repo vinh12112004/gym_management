@@ -38,6 +38,7 @@ com\gymapp\controller\Package\PackageFormController$1.class
 com\gymapp\model\WorkoutSession.class
 com\gymapp\controller\Dashboard\DashboardController$1$4.class
 com\gymapp\controller\MemberPackage\MemberPackagesController$1.class
+com\gymapp\model\DateTimeArrayDeserializer.class
 com\gymapp\controller\Auth\RegisterController.class
 com\gymapp\controller\MembershipPackage\MembershipPackageFormController$2.class
 com\gymapp\api\ApiConfig.class

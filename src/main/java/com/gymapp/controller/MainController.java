@@ -111,7 +111,14 @@ public class MainController implements Initializable {
         }
         System.out.println("Role: " + role);
         System.out.println("ProfileBtn visible: " + profileBtn.isVisible());
-        showDashboard(); // Show dashboard by default
+        if ("OWNER".equalsIgnoreCase(role) || "MANAGER".equalsIgnoreCase(role)) {
+            showDashboard();
+        } else if ("TRAINER".equalsIgnoreCase(role)) {
+            // Hiển thị trang phù hợp với role
+            showTrainees();
+        } else {
+            showWorkoutHistory();
+        }
     }
 
     @FXML
@@ -223,7 +230,7 @@ public class MainController implements Initializable {
     private void setActiveButton(Button activeButton) {
         Button[] buttons = {
             dashboardBtn, equipmentBtn, membersBtn, packagesBtn, roomsBtn,
-             feedbackBtn, usersBtn, staffBtn, profileBtn,
+             feedbackBtn, usersBtn, staffBtn, profileBtn, workoutHistoryBtn,
             membershipPakagesBtn, memberPakagesBtn, traineesBtn
         };
         for (Button btn : buttons) {
