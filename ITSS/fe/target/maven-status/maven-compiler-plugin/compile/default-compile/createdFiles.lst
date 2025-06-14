@@ -29,6 +29,7 @@ com\gymapp\controller\Member\MemberFormController$1.class
 com\gymapp\controller\MembershipPackage\MembershipPackageFormController$6.class
 com\gymapp\model\Member.class
 com\gymapp\controller\Package\PackageController$1.class
+com\gymapp\controller\MembershipPackage\MembershipPackageFormController$9.class
 com\gymapp\controller\Feedback\FeedbackFormController.class
 com\gymapp\controller\MembershipPackage\MembershipPackageFormController.class
 com\gymapp\controller\User\UserController$1$1.class
@@ -44,6 +45,7 @@ com\gymapp\controller\MembershipPackage\MembershipPackageFormController$2.class
 com\gymapp\api\ApiConfig.class
 com\gymapp\controller\Package\PackageController.class
 com\gymapp\controller\Feedback\FeedbackController$2.class
+com\gymapp\controller\MembershipPackage\MembershipPackageFormController$8.class
 com\gymapp\controller\MembershipPackage\MembershipPackageFormController$1.class
 com\gymapp\model\Role.class
 com\gymapp\controller\MembershipPackage\MembershipPackageController$1.class

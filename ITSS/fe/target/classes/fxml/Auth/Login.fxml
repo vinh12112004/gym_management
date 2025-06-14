@@ -22,7 +22,7 @@
             <TextField fx:id="usernameField" promptText="Username" />
             <PasswordField fx:id="passwordField" promptText="Password" />
             <Button fx:id="loginButton" mnemonicParsing="false" onAction="#handleLogin" text="Login" />
-            <Button fx:id="registerButton" mnemonicParsing="false" onAction="#handleRegister" text="Register" />
+            <Button fx:id="registerButton" mnemonicParsing="false" onAction="#handleRegister" text="Register" visible="false" managed="false" />
          </children>
       </VBox>
       <ProgressIndicator fx:id="progressIndicator" visible="false" />

@@ -56,6 +56,22 @@ public class MembershipPackageFormController {
             }
         }).start();
 
+        // Load danh sách HLV
+        new Thread(() -> {
+            try {
+                HttpResponse<String> resp = ApiClient.getInstance().get(ApiConfig.STAFFS);
+                List<Staff> staffs = ApiClient.getInstance().getObjectMapper()
+                        .readValue(resp.body(), new com.fasterxml.jackson.core.type.TypeReference<List<Staff>>() {});
+                // Lọc chỉ lấy TRAINER
+                List<Staff> trainers = staffs.stream()
+                        .filter(s -> "TRAINER".equalsIgnoreCase(s.getPosition()))
+                        .toList();
+                Platform.runLater(() -> coachComboBox.setItems(FXCollections.observableArrayList(trainers)));
+            } catch (Exception e) {
+                Platform.runLater(() -> AlertHelper.showError("Error", "Không tải được danh sách HLV"));
+            }
+        }).start();
+
         // Hiển thị tên hội viên trong ComboBox
         memberComboBox.setCellFactory(lv -> new ListCell<>() {
             @Override
@@ -88,20 +104,31 @@ public class MembershipPackageFormController {
             }
         });
 
-        new Thread(() -> {
-            try {
-                HttpResponse<String> resp = ApiClient.getInstance().get(ApiConfig.STAFFS);
-                List<Staff> staffs = ApiClient.getInstance().getObjectMapper()
-                        .readValue(resp.body(), new com.fasterxml.jackson.core.type.TypeReference<List<Staff>>() {});
-                // Lọc chỉ lấy TRAINER
-                List<Staff> trainers = staffs.stream()
-                        .filter(s -> "TRAINER".equalsIgnoreCase(s.getPosition()))
-                        .toList();
-                Platform.runLater(() -> coachComboBox.setItems(FXCollections.observableArrayList(trainers)));
-            } catch (Exception e) {
-                Platform.runLater(() -> AlertHelper.showError("Error", "Không tải được danh sách HLV"));
+        // THÊM: Hiển thị tên HLV trong ComboBox
+        coachComboBox.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(Staff item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    String fullName = item.getFirstName() + " " + item.getLastName();
+                    setText(fullName);
+                }
             }
-        }).start();
+        });
+        coachComboBox.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(Staff item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    String fullName = item.getFirstName() + " " + item.getLastName();
+                    setText(fullName);
+                }
+            }
+        });
 
         // Hiện/ẩn ComboBox chọn HLV khi tích checkbox
         coachCheckBox.selectedProperty().addListener((obs, oldVal, newVal) -> {

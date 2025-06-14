@@ -34,8 +34,6 @@ public class FeedbackController implements Initializable {
     @FXML private TableColumn<Feedback, String> subjectColumn;
     @FXML private TableColumn<Feedback, Integer> ratingColumn;
     @FXML private TableColumn<Feedback, String> statusColumn;
-
-    // 1. Đổi kiểu cột ngày
     @FXML private TableColumn<Feedback, LocalDateTime> dateColumn;
 
     @FXML private Button addButton;
@@ -50,7 +48,7 @@ public class FeedbackController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setupTable();
-        setupRoleBasedAccess(); // Thêm dòng này
+        setupRoleBasedAccess();
         refreshData();
     }
 
@@ -60,7 +58,6 @@ public class FeedbackController implements Initializable {
         System.out.println("=== DEBUG setupRoleBasedAccess ===");
         System.out.println("Current role: " + currentRole);
         
-        // Chỉ ẩn nút Add cho MANAGER và OWNER, vẫn cho phép xem và update status
         if ("MANAGER".equalsIgnoreCase(currentRole) || "OWNER".equalsIgnoreCase(currentRole)) {
             addButton.setVisible(false);
             addButton.setManaged(false);
@@ -87,7 +84,6 @@ public class FeedbackController implements Initializable {
         ratingColumn.setCellValueFactory(new PropertyValueFactory<>("rating"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-        // 3. CellFactory nhận LocalDateTime
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
         dateColumn.setCellFactory(column -> new TableCell<Feedback, LocalDateTime>() {
             @Override
@@ -128,63 +124,77 @@ public class FeedbackController implements Initializable {
                         List<Feedback> allFeedback = ApiClient.getInstance().getObjectMapper()
                                 .readValue(response.body(), new TypeReference<List<Feedback>>() {});
 
-                        String currentRole = SessionManager.getInstance().getCurrentRole();
-                        String currentUsername = SessionManager.getInstance().getCurrentUser();
+                        // Khai báo final từ đầu
+                        final String currentRole = SessionManager.getInstance().getCurrentRole();
+                        final String currentUsername = SessionManager.getInstance().getCurrentUser();
+                        final String currentEmail = SessionManager.getInstance().getEmail();
                         
                         System.out.println("Current role: " + currentRole);
                         System.out.println("Current username: " + currentUsername);
+                        System.out.println("Current email: " + currentEmail);
                         System.out.println("Total feedback count: " + allFeedback.size());
 
                         List<Feedback> filteredFeedback;
 
-                        try {
-                            // Nếu là MEMBER, chỉ hiển thị feedback của member hiện tại
-                            if ("MEMBER".equalsIgnoreCase(currentRole)) {
-                                System.out.println("Filtering for MEMBER role...");
+                        if ("MEMBER".equalsIgnoreCase(currentRole)) {
+                            System.out.println("Filtering for MEMBER role...");
+                            
+                            if (currentEmail != null && !currentEmail.trim().isEmpty()) {
+                                System.out.println("Trying to get member info by email: " + currentEmail);
                                 
-                                filteredFeedback = allFeedback.stream()
-                                        .filter(f -> {
-                                            try {
-                                                String memberName = f.getMemberName();
-                                                if (memberName == null || currentUsername == null) {
-                                                    System.out.println("Null values - memberName: " + memberName + ", currentUsername: " + currentUsername);
-                                                    return false;
-                                                }
-                                                
-                                                // Sử dụng startsWith để match "member" với "member 00"
-                                                boolean match = memberName.trim().toLowerCase()
-                                                                        .startsWith(currentUsername.trim().toLowerCase());
-                                                
-                                                System.out.println("Feedback ID: " + f.getId() + 
-                                                                ", MemberName: '" + memberName + "'" + 
-                                                                ", CurrentUser: '" + currentUsername + "'" +
-                                                                ", Match: " + match);
-                                                return match;
-                                            } catch (Exception e) {
-                                                System.err.println("Error in filter: " + e.getMessage());
-                                                e.printStackTrace();
-                                                return false;
-                                            }
-                                        })
-                                        .collect(java.util.stream.Collectors.toList());
-                                
-                                System.out.println("Filtered feedback count for MEMBER: " + filteredFeedback.size());
+                                try {
+                                    String memberEndpoint = ApiConfig.BASE_URL + "/members/email/" + currentEmail;
+                                    HttpResponse<String> memberResponse = ApiClient.getInstance().get(memberEndpoint);
+                                    
+                                    System.out.println("Member API status: " + memberResponse.statusCode());
+                                    
+                                    if (memberResponse.statusCode() == 200) {
+                                        System.out.println("Member response: " + memberResponse.body());
+                                        
+                                        filteredFeedback = allFeedback.stream()
+                                                .filter(f -> {
+                                                    String feedbackMemberName = f.getMemberName();
+                                                    
+                                                    boolean emailMatch = feedbackMemberName != null && 
+                                                                    feedbackMemberName.toLowerCase().contains(currentEmail.toLowerCase());
+                                                    
+                                                    System.out.println("Feedback ID: " + f.getId() + 
+                                                                    ", MemberName: '" + feedbackMemberName + "'" +
+                                                                    ", CurrentEmail: '" + currentEmail + "'" +
+                                                                    ", EmailMatch: " + emailMatch);
+                                                    
+                                                    return emailMatch;
+                                                })
+                                                .collect(java.util.stream.Collectors.toList());
+                                    } else {
+                                        System.out.println("Cannot get member info (status " + memberResponse.statusCode() + "), showing all feedback");
+                                        filteredFeedback = allFeedback;
+                                    }
+                                } catch (Exception memberException) {
+                                    System.err.println("Error getting member info: " + memberException.getMessage());
+                                    System.out.println("Fallback: showing all feedback for member");
+                                    filteredFeedback = allFeedback;
+                                }
                             } else {
-                                // MANAGER, OWNER, TRAINER thấy tất cả feedback
+                                System.out.println("No email available, showing all feedback");
                                 filteredFeedback = allFeedback;
-                                System.out.println("Showing all feedback for role: " + currentRole);
                             }
-                        } catch (Exception filterException) {
-                            System.err.println("Error in filtering logic: " + filterException.getMessage());
-                            filterException.printStackTrace();
-                            throw filterException;
+                            
+                            System.out.println("Filtered feedback count for MEMBER: " + filteredFeedback.size());
+                            
+                        } else {
+                            filteredFeedback = allFeedback;
+                            System.out.println("Showing all feedback for role: " + currentRole);
                         }
 
+                        // Tạo final variable cho lambda
+                        final List<Feedback> finalFilteredFeedback = filteredFeedback;
+                        
                         Platform.runLater(() -> {
                             try {
                                 feedbackList.clear();
-                                feedbackList.addAll(filteredFeedback);
-                                System.out.println("UI updated with " + filteredFeedback.size() + " feedback items");
+                                feedbackList.addAll(finalFilteredFeedback);
+                                System.out.println("UI updated with " + finalFilteredFeedback.size() + " feedback items");
                             } catch (Exception uiException) {
                                 System.err.println("Error updating UI: " + uiException.getMessage());
                                 uiException.printStackTrace();
@@ -318,12 +328,12 @@ public class FeedbackController implements Initializable {
 
     private void setLoading(boolean loading) {
         Platform.runLater(() -> {
-            progressIndicator.setVisible(loading);
-            addButton.setDisable(loading);
-            editButton.setDisable(loading);
-            viewButton.setDisable(loading);
-            updateStatusButton.setDisable(loading);
-            refreshButton.setDisable(loading);
+            if (progressIndicator != null) progressIndicator.setVisible(loading);
+            if (addButton != null) addButton.setDisable(loading);
+            if (editButton != null) editButton.setDisable(loading);
+            if (viewButton != null) viewButton.setDisable(loading);
+            if (updateStatusButton != null) updateStatusButton.setDisable(loading);
+            if (refreshButton != null) refreshButton.setDisable(loading);
         });
     }
 

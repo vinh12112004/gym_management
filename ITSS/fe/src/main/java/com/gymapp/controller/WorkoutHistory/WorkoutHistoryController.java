@@ -27,6 +27,7 @@ public class WorkoutHistoryController {
     @FXML private TableColumn<WorkoutHistory, String> noteColumn;
     @FXML private DatePicker datePicker;
     @FXML private TextField noteField;
+    @FXML private Button addBtn;
 
     private final ObservableList<WorkoutHistory> historyList = FXCollections.observableArrayList();
     private final ObservableList<Member> memberList = FXCollections.observableArrayList();
@@ -59,7 +60,12 @@ public class WorkoutHistoryController {
             // Ẩn cả HBox chứa ComboBox
             memberSelectionBox.setVisible(false);
             memberSelectionBox.setManaged(false);
-
+            addBtn.setVisible(false);
+            addBtn.setManaged(false);
+            datePicker.setVisible(false);
+            datePicker.setManaged(false);
+            noteField.setVisible(false);
+            noteField.setManaged(false);
             // Load thông tin member hiện tại
             loadCurrentMember();
         } else {
